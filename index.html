@@ -331,7 +331,7 @@
         async function cargarLogros() {
             try {
                 // Va y lee tu archivo logros.json local
-                const respuesta = await fetch('logros.json');
+                const respuesta = await fetch('logros.jsonV='+Date.now());
                 const datos = await respuesta.json();
                 if (datos.mensaje_emergencia) {
                     mensajeSorpresa = datos.mensaje_emergencia;
