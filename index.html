@@ -333,6 +333,9 @@
                 // Va y lee tu archivo logros.json local
                 const respuesta = await fetch('logros.json');
                 const datos = await respuesta.json();
+                if (datos.mensaje_emergencia) {
+                    mensajeSorpresa = datos.mensaje_emergencia;
+                }
 
                 // Inyecta los datos del JSON al HTML
                 document.getElementById('fecha-logros').innerText = "Fecha de corte: " + datos.fecha;
