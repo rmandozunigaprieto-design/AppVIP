@@ -400,7 +400,39 @@ function volverAlMenu() {
     document.getElementById('juego-clics').style.display = 'none';
     document.getElementById('menu-juegos').style.display = 'block';
 }
-        
+        // ==========================================
+        // LÓGICA DEL JUEGO: ATRAPA EL BOTÓN
+        // ==========================================
+        let huidas = 0;
+
+        function huirBoton() {
+            const btn = document.getElementById('btn-escapista');
+            const contenedor = document.getElementById('contenedor-escape');
+            
+            // Calculamos el espacio disponible en la caja
+            const maxX = contenedor.clientWidth - btn.clientWidth - 20;
+            const maxY = contenedor.clientHeight - btn.clientHeight - 20;
+            
+            // Generamos una posición al azar
+            const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+            
+            // Hacemos que huya solo 15 veces para que no se frustre tanto jajaja
+            if (huidas < 15) {
+                btn.style.left = randomX + 'px';
+                btn.style.top = randomY + 'px';
+                huidas++;
+            }
+        }
+
+        function ganarJuegoEscapa() {
+            alert("¡AL FIN! Después de huir " + huidas + " veces, te dejaste atrapar. ¡Te amo con todo mi corazón! ❤️");
+            huidas = 0; // Reiniciamos el contador
+            // Regresamos el botón al centro
+            const btn = document.getElementById('btn-escapista');
+            btn.style.left = '30%';
+            btn.style.top = '40%';
+        }
     </script>
 </body>
 </html>
