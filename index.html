@@ -202,30 +202,41 @@
             </div>
         </div>
 
-        <!-- SECCIÓN 2: JUEGOS -->
-      <div id="seccion-juegos" class="seccion-contenido">
-            <h2 style="margin-top: 0;">Reto: Prueba de Amor ❤️</h2>
+     <!-- SECCIÓN DE JUEGOS -->
+        <div id="seccion-juegos" class="seccion-contenido">
+            <h2 style="margin-top: 0;">Centro de Entretenimiento 🎮</h2>
             
-            <!-- Explicación de las reglas -->
-            <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid var(--borde-verde); font-size: 0.9rem; line-height: 1.5;">
-                <strong>📜 Reglas del juego:</strong> Tienes exactamente <b>30 segundos</b> para darle click al corazón <b>250 veces</b>. ¿Crees que me amas lo suficiente para lograrlo? 😏
+            <!-- Menú principal de juegos -->
+            <div id="menu-juegos" style="display: block;">
+                <button class="boton-tarjeta" onclick="mostrarJuego('atrapa')" style="margin-bottom: 10px; width: 100%;">🏃‍♂️ ATRAPA EL AMOR</button>
+                <button class="boton-tarjeta" onclick="mostrarJuego('clics')" style="width: 100%;">💖 RETO 250 CLICS</button>
             </div>
 
-            <div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 1.2rem; color: var(--texto-secundario);">
-    <div>⏳ Tiempo: <span id="tiempo" style="color: var(--texto-claro);">30</span>s</div>
-    <div>💖 Clicks: <span id="contador" style="color: var(--color-principal);">0</span></div>
-</div>
-            <!-- Botón del Corazón (inicia apagado) -->
-            <div style="text-align: center; margin: 30px 0;">
-                <button id="btn-corazon" onclick="tocarCorazon()" style="background: none; border: none; font-size: 5rem; cursor: pointer; filter: grayscale(100%); transition: transform 0.1s;" disabled>
-                    💖
-                </button>
+            <!-- JUEGO 1: ATRAPA EL BOTÓN -->
+            <div id="juego-atrapa" style="display: none;">
+                <h2 style="margin-top: 0;">¡Atrapa mi Amor! 🏃‍♂️💨</h2>
+                <div id="contenedor-escape" style="position: relative; width: 100%; height: 250px; background: rgba(0,0,0,0.2); border-radius: 12px; overflow: hidden; margin-bottom: 15px;">
+                    <button id="btn-escapista" onmouseover="huirBoton()" ontouchstart="huirBoton()" onclick="ganarJuegoEscapa()" style="position: absolute; left: 30%; top: 40%; padding: 10px; background: #ec4899; color: white; border: none; border-radius: 10px; cursor: pointer;">Pícame! 💖</button>
+                </div>
+                <button onclick="volverAlMenu()" class="boton-tarjeta">⬅️ Volver al menú</button>
             </div>
 
-            <!-- Botón para Iniciar -->
-            <button id="btn-iniciar" onclick="iniciarJuego()" style="width: 100%; padding: 15px; border-radius: 10px; background: var(--acento-banner); color: white; border: none; font-weight: 800; font-size: 1rem; cursor: pointer;">
-                ▶️ INICIAR RETO
-            </button>
+            <!-- JUEGO 2: RETO 250 CLICS (Tu diseño original) -->
+            <div id="juego-clics" style="display: none;">
+                <h2 style="margin-top: 0;">Reto: Prueba de Amor ❤️</h2>
+                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid var(--borde-verde); font-size: 0.9rem; line-height: 1.5;">
+                    <strong>📜 Reglas del juego:</strong> Tienes <b>30 segundos</b> para darle click al corazón <b>250 veces</b>. ¿Crees que me amas lo suficiente para lograrlo? 😏
+                </div>
+                <div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 1.2rem; color: var(--texto-secundario);">
+                    <div>⏳ Tiempo: <span id="tiempo" style="color: var(--texto-claro);">30</span>s</div>
+                    <div>💖 Clicks: <span id="contador" style="color: var(--color-principal);">0</span></div>
+                </div>
+                <div style="text-align: center; margin: 30px 0;">
+                    <button id="btn-corazon" onclick="tocarCorazon()" style="background: none; border: none; font-size: 5rem; cursor: pointer; filter: grayscale(100%); transition: transform 0.1s;" disabled>💖</button>
+                </div>
+                <button id="btn-iniciar" onclick="iniciarJuego()" style="width: 100%; padding: 15px; border-radius: 10px; background: var(--acento-banner); color: white; border: none; font-weight: 800; font-size: 1rem; cursor: pointer; margin-bottom: 10px;">▶️ INICIAR RETO</button>
+                <button onclick="volverAlMenu()" class="boton-tarjeta" style="width: 100%;">⬅️ Volver al menú</button>
+            </div>
         </div>
         <!-- SECCIÓN 3: LOGROS (PREPARADA PARA LEER JSON) -->
         <div id="seccion-logros" class="seccion-contenido">
@@ -375,6 +386,21 @@
             });
             document.getElementById('vista-dashboard').style.display = 'block';
         }
+function mostrarJuego(tipo) {
+    document.getElementById('menu-juegos').style.display = 'none';
+    if(tipo === 'atrapa') {
+        document.getElementById('juego-atrapa').style.display = 'block';
+    } else {
+        document.getElementById('juego-clics').style.display = 'block';
+    }
+}
+
+function volverAlMenu() {
+    document.getElementById('juego-atrapa').style.display = 'none';
+    document.getElementById('juego-clics').style.display = 'none';
+    document.getElementById('menu-juegos').style.display = 'block';
+}
+        
     </script>
 </body>
 </html>
