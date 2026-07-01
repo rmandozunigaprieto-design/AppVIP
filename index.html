@@ -258,14 +258,32 @@
 
 <script>
         // ==========================================
-        // 1. NAVEGACIÓN
+        // 1. NAVEGACIÓN Y LIBRO (CORREGIDO AQUÍ)
         // ==========================================
+        let flipbookInicializado = false; // Agregamos este candado
+
         function abrirSeccion(seccionId) {
             document.getElementById('vista-dashboard').style.display = 'none';
             const secciones = document.querySelectorAll('.seccion-contenido');
             secciones.forEach(s => s.style.display = 'none');
             const seleccionada = document.getElementById(seccionId);
             if (seleccionada) seleccionada.style.display = 'block';
+
+            // AQUÍ ESTÁ LA MAGIA: Armamos el libro SOLO al abrir su sección
+            if (seccionId === 'seccion-cartas' && !flipbookInicializado) {
+                const contenedorLibro = document.getElementById('mi-libro');
+                if (contenedorLibro) {
+                    const pageFlip = new St.PageFlip(contenedorLibro, {
+                        width: 300, 
+                        height: 400, 
+                        size: "fixed", 
+                        showCover: true, 
+                        usePortrait: true
+                    });
+                    pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+                    flipbookInicializado = true;
+                }
+            }
         }
 
         function volverInicio() {
@@ -275,7 +293,7 @@
         }
 
         // ==========================================
-        // 2. LÓGICA DE JUEGOS
+        // 2. LÓGICA DE JUEGOS (INTACTO)
         // ==========================================
         let corazones = 0, tiempo = 30, juegoActivo = false, intervalo;
 
@@ -329,7 +347,7 @@
         }
 
         // ==========================================
-        // 3. LOGROS Y EMERGENCIA
+        // 3. LOGROS Y EMERGENCIA (INTACTO)
         // ==========================================
         let mensajeSorpresa = "¡Te amo mi amor!";
         async function cargarLogros() {
@@ -365,19 +383,11 @@
         function cerrarEmergencia() { document.getElementById('modal-emergencia').style.display = 'none'; }
 
         // ==========================================
-        // 4. INICIALIZACIÓN FINAL
+        // 4. INICIALIZACIÓN FINAL (SOLO LOGROS)
         // ==========================================
         window.addEventListener('load', function() {
             cargarLogros();
-            
-            // Inicializar Libro con espera segura
-            const contenedorLibro = document.getElementById('mi-libro');
-            if (contenedorLibro) {
-                const pageFlip = new St.PageFlip(contenedorLibro, {
-                    width: 300, height: 400, size: "fixed", showCover: true, usePortrait: true
-                });
-                pageFlip.loadFromHTML(document.querySelectorAll('.page'));
-            }
+            // Ya quitamos lo del libro de aquí, ahora vive en abrirSeccion()
         });
     </script>
 
