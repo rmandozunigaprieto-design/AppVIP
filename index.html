@@ -239,7 +239,7 @@
                 </div>
                 <button id="btn-iniciar" onclick="iniciarJuego()" style="width: 100%; padding: 15px; border-radius: 10px; background: var(--acento-banner); color: white; border: none; font-weight: 800; font-size: 1rem; cursor: pointer; margin-bottom: 10px;">▶️ INICIAR RETO</button>
                 <button onclick="volverAlMenu()" class="boton-tarjeta" style="width: 100%;">⬅️ Volver al menú</button>
-            </div>
+            <button class="boton-tarjeta" onclick="mostrarJuego('moto')">🏍️ RUTA A PROVIDENT</button>
         </div>
         <!-- SECCIÓN 3: LOGROS (PREPARADA PARA LEER JSON) -->
         <div id="seccion-logros" class="seccion-contenido">
@@ -411,7 +411,50 @@
             </button>
         </div>
     </div>
+    <div id="juego-moto" style="display: none; text-align: center; margin-top: 20px; background: #1e2532; padding: 20px; border-radius: 12px; border: 1px solid #2d3748;">
+    <h2 style="margin-top: 0; color: #f59e0b;">Ruta a Provident 🏍️💨</h2>
+    <div id="contenedor-moto" style="position: relative; width: 100%; height: 160px; background: #111; border-radius: 12px; overflow: hidden; margin-bottom: 15px; border-bottom: 4px solid #4b5563;">
+        <div id="jugador-moto" style="position: absolute; left: 10%; bottom: 0; font-size: 3rem; transition: bottom 0.2s;">🏍️</div>
+        <div id="obstaculo-moto" style="position: absolute; left: 100%; bottom: 0; font-size: 2.5rem; display: none;">🚕</div>
+    </div>
+    <div style="font-weight: 800; margin-bottom: 15px; color: white;">Puntos: <span id="puntos-moto">0</span></div>
+    <button onclick="saltarMoto()" style="width: 100%; padding: 15px; border-radius: 10px; background: #f59e0b; color: white; border: none; font-weight: 900; margin-bottom: 10px;">⏫ ¡SALTAR!</button>
+    <button id="btn-iniciar-moto" onclick="iniciarMoto()" style="width: 100%; padding: 10px; background: green; color: white; border: none; border-radius: 10px; cursor: pointer;">▶️ ARRANCAR</button>
+    <button onclick="volverAlMenu()" style="width: 100%; padding: 10px; margin-top:10px; border-radius: 10px; border: 1px solid #ccc; background: transparent; color: white;">⬅️ Volver al Menú</button>
+</div>
+
+<script>
+    // Agrega esto al final de tu bloque <script> actual, antes de que cierre </script>
+    let motoJugando = false, puntosMoto = 0, saltando = false, posObstaculo = 100, velObstaculo = 2.5, loopMoto;
+
+    function iniciarMoto() {
+        motoJugando = true; puntosMoto = 0; posObstaculo = 100;
+        document.getElementById('puntos-moto').innerText = puntosMoto;
+        document.getElementById('btn-iniciar-moto').style.display = 'none';
+        document.getElementById('obstaculo-moto').style.display = 'block';
+        clearInterval(loopMoto);
+        loopMoto = setInterval(actualizarMoto, 30);
+    }
+    function saltarMoto() {
+        if (saltando || !motoJugando) return;
+        saltando = true;
+        const moto = document.getElementById('jugador-moto');
+        moto.style.bottom = '85px';
+        setTimeout(() => { moto.style.bottom = '0px'; setTimeout(() => { saltando = false; }, 300); }, 350);
+    }
+    function actualizarMoto() {
+        if (!motoJugando) return;
+        const obs = document.getElementById('obstaculo-moto');
+        posObstaculo -= velObstaculo;
+        if (posObstaculo < -15) { posObstaculo = 100; puntosMoto += 10; document.getElementById('puntos-moto').innerText = puntosMoto; }
+        obs.style.left = posObstaculo + '%';
+        if (posObstaculo > 5 && posObstaculo < 20 && !saltando) {
+            motoJugando = false; clearInterval(loopMoto);
+            alert("¡Chocaste el tráfico! Intenta de nuevo.");
+            document.getElementById('btn-iniciar-moto').style.display = 'block';
+        }
+    }
+</script>
 </body>
 </html>
 
-</html>
