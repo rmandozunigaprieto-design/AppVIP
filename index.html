@@ -256,115 +256,119 @@
 
     </main>
 
-   // ==========================================
-// 1. NAVEGACIÓN (Para que vuelvan a jalar los botones)
-// ==========================================
-function abrirSeccion(seccionId) {
-    const secciones = document.querySelectorAll('.seccion');
-    secciones.forEach(s => s.style.display = 'none');
-    const seleccionada = document.getElementById(seccionId);
-    if (seleccionada) seleccionada.style.display = 'block';
-}
-
-// ==========================================
-// 2. LÓGICA DEL JUEGO TAP-TAP
-// ==========================================
-let corazones = 0;
-let tiempo = 30;
-let juegoActivo = false;
-let intervalo;
-
-function iniciarJuego() {
-    corazones = 0;
-    tiempo = 30;
-    juegoActivo = true;
-    document.getElementById('contador').innerText = corazones;
-    document.getElementById('tiempo').innerText = tiempo;
-    
-    const btnCorazon = document.getElementById('btn-corazon');
-    btnCorazon.disabled = false;
-    btnCorazon.style.filter = "none";
-    document.getElementById('btn-iniciar').style.display = 'none';
-
-    intervalo = setInterval(() => {
-        tiempo--;
-        document.getElementById('tiempo').innerText = tiempo;
-        if (tiempo <= 0) terminarJuego();
-    }, 1000);
-}
-
-function tocarCorazon() {
-    if (!juegoActivo) return;
-    corazones++;
-    document.getElementById('contador').innerText = corazones;
-}
-
-function terminarJuego() {
-    juegoActivo = false;
-    clearInterval(intervalo);
-    const btnCorazon = document.getElementById('btn-corazon');
-    btnCorazon.disabled = true;
-    btnCorazon.style.filter = "grayscale(100%)";
-    const btnIniciar = document.getElementById('btn-iniciar');
-    btnIniciar.style.display = 'block';
-    btnIniciar.innerText = "🔄 VOLVER A INTENTAR";
-    setTimeout(() => {
-        if (corazones >= 250) alert("¡MÁQUINA! Hiciste " + corazones + " clicks. Te ganaste un premio especial ❤️");
-        else alert("Hiciste " + corazones + " clicks... ¡Inténtalo de nuevo!");
-    }, 100);
-}
-
-// ==========================================
-// 3. LÓGICA DEL BOTÓN ROJO Y LOGROS
-// ==========================================
-let mensajeSorpresa = "¡Te amo mi amor!";
-
-async function cargarLogros() {
-    try {
-        const respuesta = await fetch('logros.json?v=' + Date.now());
-        const datos = await respuesta.json();
-        
-        document.getElementById('fecha-logros').innerText = "Fecha de corte: " + datos.fecha;
-        document.getElementById('estatus-logros').innerText = "Estatus: " + datos.estatus;
-        
-        if(datos.mensaje_emergencia) mensajeSorpresa = datos.mensaje_emergencia;
-
-        const lista = document.getElementById('lista-logros');
-        if (lista) {
-            lista.innerHTML = ''; 
-            datos.logros.forEach(logro => {
-                const li = document.createElement('li');
-                li.style.marginBottom = "12px";
-                li.innerText = logro;
-                lista.appendChild(li);
-            });
+ <script>
+        // ==========================================
+        // 1. NAVEGACIÓN
+        // ==========================================
+        function abrirSeccion(seccionId) {
+            document.getElementById('vista-dashboard').style.display = 'none';
+            const secciones = document.querySelectorAll('.seccion-contenido');
+            secciones.forEach(s => s.style.display = 'none');
+            const seleccionada = document.getElementById(seccionId);
+            if (seleccionada) seleccionada.style.display = 'block';
         }
-    } catch (error) { console.error("Error al cargar:", error); }
-}
 
-async function activarEmergencia() {
-    await cargarLogros();
-    const texto = document.getElementById('texto-emergencia-armando');
-    const modal = document.getElementById('modal-emergencia');
-    if (texto && modal) {
-        texto.innerText = '"' + mensajeSorpresa + '"';
-        modal.style.display = 'flex';
-    }
-}
+        function volverInicio() {
+            document.getElementById('vista-dashboard').style.display = 'block';
+            const secciones = document.querySelectorAll('.seccion-contenido');
+            secciones.forEach(s => s.style.display = 'none');
+        }
 
-function cerrarEmergencia() {
-    document.getElementById('modal-emergencia').style.display = 'none';
-}
+        // ==========================================
+        // 2. LÓGICA DEL JUEGO TAP-TAP
+        // ==========================================
+        let corazones = 0;
+        let tiempo = 30;
+        let juegoActivo = false;
+        let intervalo;
 
-// ==========================================
-// 4. INICIALIZACIÓN (El orden importa)
-// ==========================================
-window.onload = function() {
-    cargarLogros();
-    // Si tuvieras otra inicialización (como el page-flip), ponla aquí abajo
-};
+        function iniciarJuego() {
+            corazones = 0;
+            tiempo = 30;
+            juegoActivo = true;
+            document.getElementById('contador').innerText = corazones;
+            document.getElementById('tiempo').innerText = tiempo;
+            
+            const btnCorazon = document.getElementById('btn-corazon');
+            btnCorazon.disabled = false;
+            btnCorazon.style.filter = "none";
+            document.getElementById('btn-iniciar').style.display = 'none';
+
+            intervalo = setInterval(() => {
+                tiempo--;
+                document.getElementById('tiempo').innerText = tiempo;
+                if (tiempo <= 0) terminarJuego();
+            }, 1000);
+        }
+
+        function tocarCorazon() {
+            if (!juegoActivo) return;
+            corazones++;
+            document.getElementById('contador').innerText = corazones;
+        }
+
+        function terminarJuego() {
+            juegoActivo = false;
+            clearInterval(intervalo);
+            const btnCorazon = document.getElementById('btn-corazon');
+            btnCorazon.disabled = true;
+            btnCorazon.style.filter = "grayscale(100%)";
+            const btnIniciar = document.getElementById('btn-iniciar');
+            btnIniciar.style.display = 'block';
+            btnIniciar.innerText = "🔄 VOLVER A INTENTAR";
+            setTimeout(() => {
+                if (corazones >= 250) alert("¡MÁQUINA! Hiciste " + corazones + " clicks. Te ganaste un premio especial ❤️");
+                else alert("Hiciste " + corazones + " clicks... ¡Inténtalo de nuevo!");
+            }, 100);
+        }
+
+        // ==========================================
+        // 3. LÓGICA DEL BOTÓN ROJO Y LOGROS
+        // ==========================================
+        let mensajeSorpresa = "¡Te amo mi amor!";
+
+        async function cargarLogros() {
+            try {
+                const respuesta = await fetch('logros.json?v=' + Date.now());
+                const datos = await respuesta.json();
+                
+                document.getElementById('fecha-logros').innerText = "Fecha de corte: " + datos.fecha;
+                document.getElementById('estatus-logros').innerText = "Estatus: " + datos.estatus;
+                
+                if(datos.mensaje_emergencia) mensajeSorpresa = datos.mensaje_emergencia;
+
+                const lista = document.getElementById('lista-logros');
+                if (lista) {
+                    lista.innerHTML = ''; 
+                    datos.logros.forEach(logro => {
+                        const li = document.createElement('li');
+                        li.style.marginBottom = "12px";
+                        li.innerText = logro;
+                        lista.appendChild(li);
+                    });
+                }
+            } catch (error) { console.error("Error al cargar:", error); }
+        }
+
+        async function activarEmergencia() {
+            await cargarLogros();
+            const texto = document.getElementById('texto-emergencia-armando');
+            const modal = document.getElementById('modal-emergencia');
+            if (texto && modal) {
+                texto.innerText = '"' + mensajeSorpresa + '"';
+                modal.style.display = 'flex';
+            }
+        }
+
+        function cerrarEmergencia() {
+            document.getElementById('modal-emergencia').style.display = 'none';
+        }
+
+        window.onload = function() {
+            cargarLogros();
+        };
     </script>
-    <!-- PANTALLA FLOTANTE DE EMERGENCIA -->
+
     <div id="modal-emergencia" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(16, 22, 35, 0.95); z-index: 9999; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
         <div style="background: #1e2532; border: 2px solid #ef4444; padding: 30px 20px; border-radius: 16px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);">
             <span style="font-size: 3.5rem; display: block; margin-bottom: 10px;">🚨</span>
