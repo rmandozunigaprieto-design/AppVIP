@@ -255,34 +255,44 @@
         </div>
 
     </main>
+<!-- LIBRERÍA DEL LIBRO (No la borres por nada del mundo) -->
+    <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"></script>
 
-<script>
+    <script>
         // ==========================================
-        // 1. NAVEGACIÓN Y LIBRO (CORREGIDO AQUÍ)
+        // 1. NAVEGACIÓN Y LIBRO (CON RETRASO MILIMÉTRICO)
         // ==========================================
-        let flipbookInicializado = false; // Agregamos este candado
+        let flipbookInicializado = false;
 
         function abrirSeccion(seccionId) {
             document.getElementById('vista-dashboard').style.display = 'none';
             const secciones = document.querySelectorAll('.seccion-contenido');
             secciones.forEach(s => s.style.display = 'none');
+            
             const seleccionada = document.getElementById(seccionId);
             if (seleccionada) seleccionada.style.display = 'block';
 
-            // AQUÍ ESTÁ LA MAGIA: Armamos el libro SOLO al abrir su sección
+            // AQUÍ ESTÁ EL TRUCO DEFINITIVO: Le damos 100 milisegundos al navegador para pintar la pantalla
             if (seccionId === 'seccion-cartas' && !flipbookInicializado) {
-                const contenedorLibro = document.getElementById('mi-libro');
-                if (contenedorLibro) {
-                    const pageFlip = new St.PageFlip(contenedorLibro, {
-                        width: 300, 
-                        height: 400, 
-                        size: "fixed", 
-                        showCover: true, 
-                        usePortrait: true
-                    });
-                    pageFlip.loadFromHTML(document.querySelectorAll('.page'));
-                    flipbookInicializado = true;
-                }
+                setTimeout(() => {
+                    const contenedorLibro = document.getElementById('mi-libro');
+                    if (contenedorLibro) {
+                        try {
+                            const pageFlip = new St.PageFlip(contenedorLibro, {
+                                width: 300, 
+                                height: 400, 
+                                size: "fixed", 
+                                showCover: true, 
+                                usePortrait: true
+                            });
+                            // Aseguramos que solo agarre las hojas de ESTE libro
+                            pageFlip.loadFromHTML(document.querySelectorAll('#mi-libro .page'));
+                            flipbookInicializado = true;
+                        } catch(e) {
+                            console.error("Error al armar el libro:", e);
+                        }
+                    }
+                }, 100); // <- Este pequeño retraso arregla todo
             }
         }
 
@@ -293,7 +303,7 @@
         }
 
         // ==========================================
-        // 2. LÓGICA DE JUEGOS (INTACTO)
+        // 2. LÓGICA DE JUEGOS
         // ==========================================
         let corazones = 0, tiempo = 30, juegoActivo = false, intervalo;
 
@@ -347,9 +357,10 @@
         }
 
         // ==========================================
-        // 3. LOGROS Y EMERGENCIA (INTACTO)
+        // 3. LOGROS Y EMERGENCIA
         // ==========================================
         let mensajeSorpresa = "¡Te amo mi amor!";
+        
         async function cargarLogros() {
             try {
                 const respuesta = await fetch('logros.json?v=' + Date.now());
@@ -383,11 +394,10 @@
         function cerrarEmergencia() { document.getElementById('modal-emergencia').style.display = 'none'; }
 
         // ==========================================
-        // 4. INICIALIZACIÓN FINAL (SOLO LOGROS)
+        // 4. INICIALIZACIÓN DE LOGROS AL ENTRAR
         // ==========================================
         window.addEventListener('load', function() {
             cargarLogros();
-            // Ya quitamos lo del libro de aquí, ahora vive en abrirSeccion()
         });
     </script>
 
@@ -402,4 +412,6 @@
         </div>
     </div>
 </body>
+</html>
+
 </html>
