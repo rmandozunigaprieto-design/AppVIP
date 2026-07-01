@@ -364,22 +364,28 @@ async function cargarLogros() {
 // Función para activar el botón rojo (VERSIÓN NUCLEAR)
 // Función para activar el botón rojo (VERSIÓN A PRUEBA DE COMILLAS)
 // Función para activar el botón rojo
+// Función para activar el botón rojo
 async function activarEmergencia() {
     try {
         const respuesta = await fetch('logros.json?v=' + Date.now());
         const datos = await respuesta.json();
-        let mensaje = datos.mensaje_emergencia || "¡Te amo mi amor!";
+        
+        let mensaje = "¡Cargando el corazón de Armando..."; 
+        if (datos.mensaje_emergencia) {
+            mensaje = datos.mensaje_emergencia;
+        }
+
+        // Aquí está el truco: unimos las comillas físicas con el contenido de la variable
         document.getElementById('texto-emergencia-armando').innerText = '"' + mensaje + '"';
         document.getElementById('modal-emergencia').style.display = 'flex';
     } catch (error) {
+        console.error(error);
         alert("Error al cargar mensaje");
     }
 }
 
-// Función para cerrar
 function cerrarEmergencia() {
     document.getElementById('modal-emergencia').style.display = 'none';
-}
 }
 
 // Asegurarse de cargar al inicio
