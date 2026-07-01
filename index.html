@@ -258,7 +258,7 @@
 
  <script>
         // ==========================================
-        // 1. NAVEGACIÓN
+        // 1. NAVEGACIÓN Y LIBRO (PAGE-FLIP)
         // ==========================================
         function abrirSeccion(seccionId) {
             document.getElementById('vista-dashboard').style.display = 'none';
@@ -275,55 +275,61 @@
         }
 
         // ==========================================
-        // 2. LÓGICA DEL JUEGO TAP-TAP
+        // 2. LÓGICA DE JUEGOS
         // ==========================================
-        let corazones = 0;
-        let tiempo = 30;
-        let juegoActivo = false;
-        let intervalo;
+        let corazones = 0, tiempo = 30, juegoActivo = false, intervalo;
 
         function iniciarJuego() {
-            corazones = 0;
-            tiempo = 30;
-            juegoActivo = true;
+            corazones = 0; tiempo = 30; juegoActivo = true;
             document.getElementById('contador').innerText = corazones;
             document.getElementById('tiempo').innerText = tiempo;
-            
             const btnCorazon = document.getElementById('btn-corazon');
-            btnCorazon.disabled = false;
-            btnCorazon.style.filter = "none";
+            btnCorazon.disabled = false; btnCorazon.style.filter = "none";
             document.getElementById('btn-iniciar').style.display = 'none';
-
             intervalo = setInterval(() => {
-                tiempo--;
-                document.getElementById('tiempo').innerText = tiempo;
+                tiempo--; document.getElementById('tiempo').innerText = tiempo;
                 if (tiempo <= 0) terminarJuego();
             }, 1000);
         }
 
         function tocarCorazon() {
             if (!juegoActivo) return;
-            corazones++;
-            document.getElementById('contador').innerText = corazones;
+            corazones++; document.getElementById('contador').innerText = corazones;
         }
 
         function terminarJuego() {
-            juegoActivo = false;
-            clearInterval(intervalo);
+            juegoActivo = false; clearInterval(intervalo);
             const btnCorazon = document.getElementById('btn-corazon');
-            btnCorazon.disabled = true;
-            btnCorazon.style.filter = "grayscale(100%)";
+            btnCorazon.disabled = true; btnCorazon.style.filter = "grayscale(100%)";
             const btnIniciar = document.getElementById('btn-iniciar');
-            btnIniciar.style.display = 'block';
-            btnIniciar.innerText = "🔄 VOLVER A INTENTAR";
+            btnIniciar.style.display = 'block'; btnIniciar.innerText = "🔄 VOLVER A INTENTAR";
             setTimeout(() => {
                 if (corazones >= 250) alert("¡MÁQUINA! Hiciste " + corazones + " clicks. Te ganaste un premio especial ❤️");
                 else alert("Hiciste " + corazones + " clicks... ¡Inténtalo de nuevo!");
             }, 100);
         }
 
+        function mostrarJuego(tipo) {
+            document.getElementById('menu-juegos').style.display = 'none';
+            if (tipo === 'atrapa') document.getElementById('juego-atrapa').style.display = 'block';
+            else if (tipo === 'clics') document.getElementById('juego-clics').style.display = 'block';
+        }
+
+        function volverAlMenu() {
+            document.getElementById('menu-juegos').style.display = 'block';
+            document.getElementById('juego-atrapa').style.display = 'none';
+            document.getElementById('juego-clics').style.display = 'none';
+        }
+
+        function huirBoton() {
+            const btn = document.getElementById('btn-escapista');
+            const contenedor = document.getElementById('contenedor-escape');
+            btn.style.left = Math.random() * (contenedor.offsetWidth - btn.offsetWidth) + 'px';
+            btn.style.top = Math.random() * (contenedor.offsetHeight - btn.offsetHeight) + 'px';
+        }
+
         // ==========================================
-        // 3. LÓGICA DEL BOTÓN ROJO Y LOGROS
+        // 3. BOTÓN ROJO Y LOGROS
         // ==========================================
         let mensajeSorpresa = "¡Te amo mi amor!";
 
@@ -331,12 +337,9 @@
             try {
                 const respuesta = await fetch('logros.json?v=' + Date.now());
                 const datos = await respuesta.json();
-                
                 document.getElementById('fecha-logros').innerText = "Fecha de corte: " + datos.fecha;
                 document.getElementById('estatus-logros').innerText = "Estatus: " + datos.estatus;
-                
                 if(datos.mensaje_emergencia) mensajeSorpresa = datos.mensaje_emergencia;
-
                 const lista = document.getElementById('lista-logros');
                 if (lista) {
                     lista.innerHTML = ''; 
@@ -360,12 +363,22 @@
             }
         }
 
-        function cerrarEmergencia() {
-            document.getElementById('modal-emergencia').style.display = 'none';
-        }
+        function cerrarEmergencia() { document.getElementById('modal-emergencia').style.display = 'none'; }
 
+        // ==========================================
+        // 4. INICIALIZACIÓN
+        // ==========================================
+        let flipbookInicializado = false;
         window.onload = function() {
             cargarLogros();
+            // Inicializar Libro
+            if (!flipbookInicializado) {
+                const pageFlip = new St.PageFlip(document.getElementById('mi-libro'), {
+                    width: 300, height: 400, size: "fixed", showCover: true
+                });
+                pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+                flipbookInicializado = true;
+            }
         };
     </script>
 
@@ -373,11 +386,7 @@
         <div style="background: #1e2532; border: 2px solid #ef4444; padding: 30px 20px; border-radius: 16px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);">
             <span style="font-size: 3.5rem; display: block; margin-bottom: 10px;">🚨</span>
             <h3 style="color: #ef4444; margin: 0 0 15px 0; font-weight: 800;">PENSAMIENTO DE EMERGENCIA</h3>
-            
-            <p id="texto-emergencia-armando" style="font-size: 1.1rem; line-height: 1.6; color: #f3f4f6; margin: 20px 0; font-style: italic;">
-                "Cargando el corazón de Armando..."
-            </p>
-            
+            <p id="texto-emergencia-armando" style="font-size: 1.1rem; line-height: 1.6; color: #f3f4f6; margin: 20px 0; font-style: italic;">"Cargando..."</p>
             <button onclick="cerrarEmergencia()" style="background: #ef4444; color: white; border: none; padding: 14px; border-radius: 10px; font-weight: 800; font-size: 1rem; cursor: pointer; width: 100%; margin-top: 10px;">
                 Yo también te amo ❤️
             </button>
