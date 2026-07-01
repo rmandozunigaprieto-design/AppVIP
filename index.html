@@ -328,130 +328,59 @@
             }, 100);
         }
         // Función para ir a buscar los datos al archivo JSON
-        async function cargarLogros() {
-            try {
-                // Va y lee tu archivo logros.json local
-                const respuesta = await fetch('logros.jsonV='+Date.now());
-                const datos = await respuesta.json();
-                if (datos.mensaje_emergencia) {
-                    mensajeSorpresa = datos.mensaje_emergencia;
-                }
+      // Variable Global para el mensaje
+let mensajeSorpresa = "¡Te amo mi amor!";
 
-                // Inyecta los datos del JSON al HTML
-                document.getElementById('fecha-logros').innerText = "Fecha de corte: " + datos.fecha;
-                document.getElementById('estatus-logros').innerText = "Estatus: " + datos.estatus;
-
-                // Limpia la lista actual
-                const lista = document.getElementById('lista-logros');
-                lista.innerHTML = ''; 
-
-                // Imprime los logros nuevos
-                datos.logros.forEach(logro => {
-                    const li = document.createElement('li');
-                    li.style.marginBottom = "12px";
-                    li.innerText = logro;
-                    lista.appendChild(li);
-                });
-            } catch (error) {
-                console.error("Error cargando base de datos:", error);
-                document.getElementById('lista-logros').innerHTML = "<li>Aún no he escrito el reporte de hoy, pero igual eres la mejor.</li>";
-            }
+// Función para cargar datos
+async function cargarLogros() {
+    try {
+        const respuesta = await fetch('logros.json?v=' + Date.now());
+        const datos = await respuesta.json();
+        
+        document.getElementById('fecha-logros').innerText = "Fecha de corte: " + datos.fecha;
+        document.getElementById('estatus-logros').innerText = "Estatus: " + datos.estatus;
+        
+        // Actualizar el mensaje global si existe en el JSON
+        if(datos.mensaje_emergencia) {
+            mensajeSorpresa = datos.mensaje_emergencia;
         }
 
-        // Función Maestra de Navegación
-        function abrirSeccion(id) {
-            document.getElementById('vista-dashboard').style.display = 'none';
-            
-            document.querySelectorAll('.seccion-contenido').forEach(sec => {
-                sec.style.display = 'none';
+        const lista = document.getElementById('lista-logros');
+        if (lista) {
+            lista.innerHTML = ''; 
+            datos.logros.forEach(logro => {
+                const li = document.createElement('li');
+                li.style.marginBottom = "12px";
+                li.innerText = logro;
+                lista.appendChild(li);
             });
-            
-            document.getElementById(id).style.display = 'block';
-
-            // Cargar el libro solo si entra a la sección y no está armado aún
-            if (id === 'seccion-cartas' && !flipbookInicializado) {
-                const contenedorLibro = document.getElementById('mi-libro');
-                const pageFlip = new St.PageFlip(contenedorLibro, {
-                    width: 320, height: 480, size: "stretch", minWidth: 250, maxWidth: 450, minHeight: 350, maxHeight: 700,
-                    showCover: true, usePortrait: true, maxShadowOpacity: 0.3, drawShadow: true
-                });
-                pageFlip.loadFromHTML(document.querySelectorAll('.page'));
-                flipbookInicializado = true; 
-            }
-
-            // Ejecutar la búsqueda de logros si entra a esa sección
-            if (id === 'seccion-logros') {
-                cargarLogros();
-            }
         }
-
-        // Regresar al inicio
-        function volverInicio() {
-            document.querySelectorAll('.seccion-contenido').forEach(sec => {
-                sec.style.display = 'none';
-            });
-            document.getElementById('vista-dashboard').style.display = 'block';
-        }
-function mostrarJuego(tipo) {
-    document.getElementById('menu-juegos').style.display = 'none';
-    if(tipo === 'atrapa') {
-        document.getElementById('juego-atrapa').style.display = 'block';
-    } else {
-        document.getElementById('juego-clics').style.display = 'block';
+    } catch (error) {
+        console.error("Error al cargar:", error);
     }
 }
 
-function volverAlMenu() {
-    document.getElementById('juego-atrapa').style.display = 'none';
-    document.getElementById('juego-clics').style.display = 'none';
-    document.getElementById('menu-juegos').style.display = 'block';
+// Función para activar el botón rojo
+async function activarEmergencia() {
+    await cargarLogros(); // Asegura cargar lo nuevo
+    const texto = document.getElementById('texto-emergencia-armando');
+    const modal = document.getElementById('modal-emergencia');
+    
+    if (texto && modal) {
+        texto.innerText = "${mensajeSorpresa}";
+        modal.style.display = 'flex';
+    }
 }
-        // ==========================================
-        // LÓGICA DEL JUEGO: ATRAPA EL BOTÓN
-        // ==========================================
-        let huidas = 0;
 
-        function huirBoton() {
-            const btn = document.getElementById('btn-escapista');
-            const contenedor = document.getElementById('contenedor-escape');
-            
-            // Calculamos el espacio disponible en la caja
-            const maxX = contenedor.clientWidth - btn.clientWidth - 20;
-            const maxY = contenedor.clientHeight - btn.clientHeight - 20;
-            
-            // Generamos una posición al azar
-            const randomX = Math.max(10, Math.floor(Math.random() * maxX));
-            const randomY = Math.max(10, Math.floor(Math.random() * maxY));
-            
-            // Hacemos que huya solo 15 veces para que no se frustre tanto jajaja
-            if (huidas < 15) {
-                btn.style.left = randomX + 'px';
-                btn.style.top = randomY + 'px';
-                huidas++;
-            }
-        }
+function cerrarEmergencia() {
+    const modal = document.getElementById('modal-emergencia');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
 
-        function ganarJuegoEscapa() {
-            alert("¡AL FIN! Después de huir " + huidas + " veces, te dejaste atrapar. ¡Te amo con todo mi corazón! ❤️");
-            huidas = 0; // Reiniciamos el contador
-            // Regresamos el botón al centro
-            const btn = document.getElementById('btn-escapista');
-            btn.style.left = '30%';
-            btn.style.top = '40%';
-        }
-        // ==========================================
-        // LÓGICA DE EMERGENCIA
-        // ==========================================
-        let mensajeSorpresa = "¡Hola mi amor! Eres una chingona, mucho éxito hoy. ¡Te amo!";
-
-        function activarEmergencia() {
-            document.getElementById('texto-emergencia-armando').innerText = "${mensajeSorpresa}";
-            document.getElementById('modal-emergencia').style.display = 'flex';
-        }
-
-        function cerrarEmergencia() {
-            document.getElementById('modal-emergencia').style.display = 'none';
-        }
+// Asegurarse de cargar al inicio
+window.onload = cargarLogros;
     </script>
     <!-- PANTALLA FLOTANTE DE EMERGENCIA -->
     <div id="modal-emergencia" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(16, 22, 35, 0.95); z-index: 9999; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
