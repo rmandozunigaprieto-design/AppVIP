@@ -361,14 +361,34 @@ async function cargarLogros() {
 }
 
 // Función para activar el botón rojo
+// Función para activar el botón rojo (VERSIÓN NUCLEAR)
 async function activarEmergencia() {
-    await cargarLogros(); // Asegura cargar lo nuevo
-    const texto = document.getElementById('texto-emergencia-armando');
-    const modal = document.getElementById('modal-emergencia');
-    
-    if (texto && modal) {
-        texto.innerText = "${mensajeSorpresa}";
-        modal.style.display = 'flex';
+    try {
+        // Obligamos al botón a descargar el archivo fresco en este preciso segundo
+        const respuesta = await fetch('logros.json?v=' + Date.now());
+        const datos = await respuesta.json();
+        
+        let mensaje = "¡Cargando el corazón de Armando..."; // Mensaje por defecto
+        
+        // Verificamos si encontró tu mensaje nuevo
+        if (datos.mensaje_emergencia) {
+            mensaje = datos.mensaje_emergencia;
+        }
+
+        const texto = document.getElementById('texto-emergencia-armando');
+        const modal = document.getElementById('modal-emergencia');
+        
+        if (texto && modal) {
+            texto.innerText = "${mensaje}";
+            modal.style.display = 'flex';
+        } else {
+            // Si falta el diseño HTML, nos va a avisar
+            alert("⚠️ Error: No encuentro el diseño de la cajita flotante en el código.");
+        }
+    } catch (error) {
+        // Si el JSON tiene un error de comas o algo, nos va a avisar
+        alert("⚠️ Error: No me pude conectar a logros.json. Puede que haya un error de escritura en ese archivo.");
+        console.error(error);
     }
 }
 
