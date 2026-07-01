@@ -256,9 +256,9 @@
 
     </main>
 
- <script>
+<script>
         // ==========================================
-        // 1. NAVEGACIÓN Y LIBRO (PAGE-FLIP)
+        // 1. NAVEGACIÓN
         // ==========================================
         function abrirSeccion(seccionId) {
             document.getElementById('vista-dashboard').style.display = 'none';
@@ -329,10 +329,9 @@
         }
 
         // ==========================================
-        // 3. BOTÓN ROJO Y LOGROS
+        // 3. LOGROS Y EMERGENCIA
         // ==========================================
         let mensajeSorpresa = "¡Te amo mi amor!";
-
         async function cargarLogros() {
             try {
                 const respuesta = await fetch('logros.json?v=' + Date.now());
@@ -366,20 +365,20 @@
         function cerrarEmergencia() { document.getElementById('modal-emergencia').style.display = 'none'; }
 
         // ==========================================
-        // 4. INICIALIZACIÓN
+        // 4. INICIALIZACIÓN FINAL
         // ==========================================
-        let flipbookInicializado = false;
-        window.onload = function() {
+        window.addEventListener('load', function() {
             cargarLogros();
-            // Inicializar Libro
-            if (!flipbookInicializado) {
-                const pageFlip = new St.PageFlip(document.getElementById('mi-libro'), {
-                    width: 300, height: 400, size: "fixed", showCover: true
+            
+            // Inicializar Libro con espera segura
+            const contenedorLibro = document.getElementById('mi-libro');
+            if (contenedorLibro) {
+                const pageFlip = new St.PageFlip(contenedorLibro, {
+                    width: 300, height: 400, size: "fixed", showCover: true, usePortrait: true
                 });
                 pageFlip.loadFromHTML(document.querySelectorAll('.page'));
-                flipbookInicializado = true;
             }
-        };
+        });
     </script>
 
     <div id="modal-emergencia" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(16, 22, 35, 0.95); z-index: 9999; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
