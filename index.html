@@ -256,82 +256,69 @@
 
     </main>
 
-    <!-- ==========================================
-         JAVASCRIPT / LÓGICA DE LA APP
-         ========================================== -->
-    <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"></script>
-    <script>
-        let flipbookInicializado = false;
-        // ==========================================
-        // LÓGICA DEL JUEGO TAP-TAP
-        // ==========================================
-        let corazones = 0;
-        let tiempo = 30;
-        let juegoActivo = false;
-        let intervalo;
+   // ==========================================
+// 1. NAVEGACIÓN (Para que vuelvan a jalar los botones)
+// ==========================================
+function abrirSeccion(seccionId) {
+    const secciones = document.querySelectorAll('.seccion');
+    secciones.forEach(s => s.style.display = 'none');
+    const seleccionada = document.getElementById(seccionId);
+    if (seleccionada) seleccionada.style.display = 'block';
+}
 
-        function iniciarJuego() {
-            // 1. Reiniciar los valores
-            corazones = 0;
-            tiempo = 30;
-            juegoActivo = true;
+// ==========================================
+// 2. LÓGICA DEL JUEGO TAP-TAP
+// ==========================================
+let corazones = 0;
+let tiempo = 30;
+let juegoActivo = false;
+let intervalo;
 
-            // 2. Actualizar los textos en pantalla
-            document.getElementById('contador').innerText = corazones;
-            document.getElementById('tiempo').innerText = tiempo;
+function iniciarJuego() {
+    corazones = 0;
+    tiempo = 30;
+    juegoActivo = true;
+    document.getElementById('contador').innerText = corazones;
+    document.getElementById('tiempo').innerText = tiempo;
+    
+    const btnCorazon = document.getElementById('btn-corazon');
+    btnCorazon.disabled = false;
+    btnCorazon.style.filter = "none";
+    document.getElementById('btn-iniciar').style.display = 'none';
 
-            // 3. Prender el corazón (quitarle lo gris y activarlo) y ocultar botón de inicio
-            const btnCorazon = document.getElementById('btn-corazon');
-            btnCorazon.disabled = false;
-            btnCorazon.style.filter = "none";
-            document.getElementById('btn-iniciar').style.display = 'none';
+    intervalo = setInterval(() => {
+        tiempo--;
+        document.getElementById('tiempo').innerText = tiempo;
+        if (tiempo <= 0) terminarJuego();
+    }, 1000);
+}
 
-            // 4. Arrancar el cronómetro
-            intervalo = setInterval(() => {
-                tiempo--;
-                document.getElementById('tiempo').innerText = tiempo;
+function tocarCorazon() {
+    if (!juegoActivo) return;
+    corazones++;
+    document.getElementById('contador').innerText = corazones;
+}
 
-                // Si el tiempo llega a cero, se acaba el juego
-                if (tiempo <= 0) {
-                    terminarJuego();
-                }
-            }, 1000); // Se repite cada 1000 milisegundos (1 segundo)
-        }
+function terminarJuego() {
+    juegoActivo = false;
+    clearInterval(intervalo);
+    const btnCorazon = document.getElementById('btn-corazon');
+    btnCorazon.disabled = true;
+    btnCorazon.style.filter = "grayscale(100%)";
+    const btnIniciar = document.getElementById('btn-iniciar');
+    btnIniciar.style.display = 'block';
+    btnIniciar.innerText = "🔄 VOLVER A INTENTAR";
+    setTimeout(() => {
+        if (corazones >= 250) alert("¡MÁQUINA! Hiciste " + corazones + " clicks. Te ganaste un premio especial ❤️");
+        else alert("Hiciste " + corazones + " clicks... ¡Inténtalo de nuevo!");
+    }, 100);
+}
 
-        function tocarCorazon() {
-            if (!juegoActivo) return; // Si el juego no ha empezado, no hace nada
-
-            corazones++; // Suma 1
-            document.getElementById('contador').innerText = corazones; // Muestra en pantalla
-        }
-
-        function terminarJuego() {
-            juegoActivo = false;
-            clearInterval(intervalo); // Detiene el cronómetro
-
-            // Apaga el corazón y vuelve a mostrar el botón de inicio
-            const btnCorazon = document.getElementById('btn-corazon');
-            btnCorazon.disabled = true;
-            btnCorazon.style.filter = "grayscale(100%)";
-            
-            const btnIniciar = document.getElementById('btn-iniciar');
-            btnIniciar.style.display = 'block';
-            btnIniciar.innerText = "🔄 VOLVER A INTENTAR";
-
-            // Evalúa si ganó o perdió
-            setTimeout(() => {
-                if (corazones >= 250) {
-                    alert("¡MÁQUINA! Hiciste " + corazones + " clicks. Definitivamente me amas muchísimo ❤️ Te ganaste un premio especial.");
-                } else {
-                    alert("Hiciste " + corazones + " clicks... Uy, creo que te faltó amor hoy 😜 ¡Inténtalo de nuevo!");
-                }
-            }, 100);
-        }
-        // Función para ir a buscar los datos al archivo JSON
-      // Variable Global para el mensaje
+// ==========================================
+// 3. LÓGICA DEL BOTÓN ROJO Y LOGROS
+// ==========================================
 let mensajeSorpresa = "¡Te amo mi amor!";
 
-// Función para cargar datos
 async function cargarLogros() {
     try {
         const respuesta = await fetch('logros.json?v=' + Date.now());
@@ -340,10 +327,7 @@ async function cargarLogros() {
         document.getElementById('fecha-logros').innerText = "Fecha de corte: " + datos.fecha;
         document.getElementById('estatus-logros').innerText = "Estatus: " + datos.estatus;
         
-        // Actualizar el mensaje global si existe en el JSON
-        if(datos.mensaje_emergencia) {
-            mensajeSorpresa = datos.mensaje_emergencia;
-        }
+        if(datos.mensaje_emergencia) mensajeSorpresa = datos.mensaje_emergencia;
 
         const lista = document.getElementById('lista-logros');
         if (lista) {
@@ -355,32 +339,16 @@ async function cargarLogros() {
                 lista.appendChild(li);
             });
         }
-    } catch (error) {
-        console.error("Error al cargar:", error);
-    }
+    } catch (error) { console.error("Error al cargar:", error); }
 }
 
-// Función para activar el botón rojo
-// Función para activar el botón rojo (VERSIÓN NUCLEAR)
-// Función para activar el botón rojo (VERSIÓN A PRUEBA DE COMILLAS)
-// Función para activar el botón rojo
-// Función para activar el botón rojo
 async function activarEmergencia() {
-    try {
-        const respuesta = await fetch('logros.json?v=' + Date.now());
-        const datos = await respuesta.json();
-        
-        let mensaje = "¡Cargando el corazón de Armando..."; 
-        if (datos.mensaje_emergencia) {
-            mensaje = datos.mensaje_emergencia;
-        }
-
-        // Aquí está el truco: unimos las comillas físicas con el contenido de la variable
-        document.getElementById('texto-emergencia-armando').innerText = '"' + mensaje + '"';
-        document.getElementById('modal-emergencia').style.display = 'flex';
-    } catch (error) {
-        console.error(error);
-        alert("Error al cargar mensaje");
+    await cargarLogros();
+    const texto = document.getElementById('texto-emergencia-armando');
+    const modal = document.getElementById('modal-emergencia');
+    if (texto && modal) {
+        texto.innerText = '"' + mensajeSorpresa + '"';
+        modal.style.display = 'flex';
     }
 }
 
@@ -388,8 +356,13 @@ function cerrarEmergencia() {
     document.getElementById('modal-emergencia').style.display = 'none';
 }
 
-// Asegurarse de cargar al inicio
-window.onload = cargarLogros;
+// ==========================================
+// 4. INICIALIZACIÓN (El orden importa)
+// ==========================================
+window.onload = function() {
+    cargarLogros();
+    // Si tuvieras otra inicialización (como el page-flip), ponla aquí abajo
+};
     </script>
     <!-- PANTALLA FLOTANTE DE EMERGENCIA -->
     <div id="modal-emergencia" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(16, 22, 35, 0.95); z-index: 9999; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
