@@ -518,7 +518,207 @@
         }
     }
 </script>
+<!-- === INICIO DEL PAQUETE 3: COTORRO + CITAS VIP === -->
+<div id="caja-fuerte-cotorro-citas" style="display: none;">
 
+    <!-- 1. BOTÓN CITAS VIP (Para el Menú Principal) -->
+    <div id="btn-citas-teleport" style="margin-top: 15px;">
+        <button class="boton-tarjeta" onclick="abrirCitasVIP()" style="width: 100%; border: 2px solid #ec4899; background: linear-gradient(45deg, #1f2937, #311b2b); padding: 15px; cursor: pointer;">✨ AGENDA VIP STUDIO</button>
+    </div>
+
+    <!-- 2. PANTALLA CITAS VIP (Simulador de su Studio) -->
+    <div id="seccion-citas-vip" class="seccion-contenido" style="display: none; background: #ffffff; border-radius: 12px; padding: 25px; color: #333; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+        <h2 style="text-align: center; color: #d946ef; margin-top:0; font-family: 'Georgia', serif; font-size: 1.8rem;">✨ Lash & Laser Studio ✨</h2>
+        <p style="text-align: center; color: #6b7280; font-size: 0.95rem; margin-bottom: 5px;">Portal Exclusivo de Citas VIP</p>
+        <div style="background: #fdf2f8; color: #be185d; padding: 5px; border-radius: 5px; text-align: center; font-size: 0.8rem; font-weight: bold; margin-bottom: 15px;">CLIENTE EXCLUSIVO AUTORIZADO</div>
+        
+        <hr style="border: 0; border-top: 1px solid #f3f4f6; margin: 15px 0;">
+        
+        <div style="margin-bottom: 15px; text-align: left;">
+            <label style="font-weight: bold; color: #374151;">Selecciona tu Servicio VIP:</label>
+            <select id="servicio-vip" style="width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #fbcfe8; margin-top: 8px; font-size: 1rem; background: #fff; color: #333; outline: none;">
+                <option value="Día de películas 🍿">Día de películas 🍿</option>
+                <option value="Día de malteadas 🥤">Día de malteadas 🥤</option>
+                <option value="Día de cine 🎬">Día de cine 🎬</option>
+                <option value="Día de besos 😘">Día de besos 😘</option>
+                <option value="Día de abrazos 🤗">Día de abrazos 🤗</option>
+                <option value="Día de hablar de la relación 💬">Día de hablar de la relación 💬</option>
+            </select>
+        </div>
+        
+        <div style="margin-bottom: 20px; text-align: left;">
+            <label style="font-weight: bold; color: #374151;">Selecciona el Día:</label>
+            <input type="date" id="fecha-vip" style="width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #fbcfe8; margin-top: 8px; font-size: 1rem; background: #fff; color: #333; outline: none;">
+        </div>
+        
+        <button onclick="generarTicketVIP()" style="width: 100%; padding: 15px; background: linear-gradient(to right, #ec4899, #d946ef); color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 6px -1px rgba(236, 72, 153, 0.4);">📅 AGENDAR CITA</button>
+        
+        <div id="ticket-vip" style="display: none; margin-top: 25px; padding: 20px; border: 2px dashed #ec4899; border-radius: 10px; background: #fdf2f8; text-align: center;">
+            <h3 style="color: #be185d; margin-top: 0; font-size: 1.4rem;">🎟️ ¡Cita Confirmada! 🎟️</h3>
+            <p style="margin: 8px 0; color: #333;"><strong>Para:</strong> Mi persona favorita</p>
+            <p style="margin: 8px 0; color: #333;"><strong>Servicio:</strong> <span id="ticket-servicio" style="color: #ec4899; font-weight: bold;"></span></p>
+            <p style="margin: 8px 0; color: #333;"><strong>Fecha:</strong> <span id="ticket-fecha" style="color: #ec4899; font-weight: bold;"></span></p>
+            <div style="margin-top: 15px; font-size: 2rem;">💖</div>
+            <p style="font-size: 0.8rem; color: #9d174d; margin-top: 10px;">*Este vale VIP no tiene fecha de caducidad y todos los gastos ya están cubiertos.</p>
+        </div>
+        
+        <button onclick="volverInicio()" style="width: 100%; padding: 12px; margin-top: 20px; border-radius: 8px; border: 2px solid #9ca3af; background: transparent; color: #4b5563; font-weight: bold; cursor: pointer;">⬅️ Volver al Inicio</button>
+    </div>
+
+    <!-- 3. BOTÓN JUEGO COTORRO (Para el Menú de Juegos) -->
+    <div id="btn-cotorro-teleport">
+        <button class="boton-tarjeta" onclick="abrirJuegoCotorro()" style="margin-top: 10px; width: 100%; border: 2px solid #34d399;">🦜 ALIMENTA AL COTORRO</button>
+    </div>
+
+    <!-- 4. PANTALLA JUEGO COTORRO -->
+    <div id="juego-cotorro" style="display: none; text-align: center; margin-top: 20px; background: #1e2532; padding: 20px; border-radius: 12px; border: 1px solid #2d3748;">
+        <h2 style="margin-top: 0; color: #34d399;">El Rescate del Cotorro 🦜</h2>
+        <p style="color: #9ca3af; font-size: 0.9rem;">¡Atrapa las semillas rápido para quitarle el hambre!</p>
+        
+        <div id="area-cotorro" style="position: relative; width: 100%; height: 220px; background: #111; border-radius: 12px; overflow: hidden; margin-bottom: 15px; border: 3px solid #4b5563;">
+            <div id="el-cotorro" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 4.5rem; transition: all 0.2s;">🦜</div>
+            <div id="la-semilla" onclick="atraparSemilla()" style="position: absolute; font-size: 2.5rem; display: none; cursor: pointer; user-select: none; z-index: 10;">🌻</div>
+        </div>
+        
+        <div style="font-weight: 800; margin-bottom: 15px; color: white; font-size: 1.2rem;">Semillas: <span id="puntos-cotorro" style="color: #34d399;">0</span> / 10</div>
+        
+        <button id="btn-iniciar-cotorro" onclick="iniciarCotorro()" style="width: 100%; padding: 15px; border-radius: 10px; background: #34d399; color: #111; border: none; font-weight: 900; margin-bottom: 10px; cursor: pointer;">▶️ DAR DE COMER</button>
+        <button onclick="volverAlMenuDesdeCotorro()" style="width: 100%; padding: 10px; margin-top:10px; border-radius: 10px; border: 1px solid #ccc; background: transparent; color: white; cursor: pointer;">⬅️ Volver a Juegos</button>
+    </div>
+
+</div>
+
+<!-- LÓGICA DE LOS NUEVOS MÓDULOS -->
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        // Teletransportar botón Citas VIP
+        const dashboard = document.getElementById('vista-dashboard');
+        const btnCitas = document.getElementById('btn-citas-teleport');
+        if (dashboard && btnCitas) dashboard.appendChild(btnCitas);
+
+        // Teletransportar sección Citas VIP
+        const seccionCitas = document.getElementById('seccion-citas-vip');
+        if (seccionCitas) document.body.appendChild(seccionCitas);
+
+        // Teletransportar botón Cotorro
+        const menuJuegos = document.getElementById('menu-juegos');
+        const btnCotorro = document.getElementById('btn-cotorro-teleport');
+        if (menuJuegos && btnCotorro) menuJuegos.appendChild(btnCotorro);
+
+        // Teletransportar juego Cotorro
+        const seccionJuegos = document.getElementById('seccion-juegos');
+        const juegoCotorro = document.getElementById('juego-cotorro');
+        if (seccionJuegos && juegoCotorro) seccionJuegos.appendChild(juegoCotorro);
+    });
+
+    // --- LÓGICA CITAS VIP ---
+    function abrirCitasVIP() {
+        document.getElementById('vista-dashboard').style.display = 'none';
+        const secciones = document.querySelectorAll('.seccion-contenido');
+        secciones.forEach(s => s.style.display = 'none');
+        document.getElementById('seccion-citas-vip').style.display = 'block';
+        document.getElementById('ticket-vip').style.display = 'none'; // Ocultar ticket anterior
+    }
+
+    function generarTicketVIP() {
+        const servicio = document.getElementById('servicio-vip').value;
+        let fecha = document.getElementById('fecha-vip').value;
+        
+        // Si no elige fecha, le ponemos una romántica por defecto
+        if (!fecha) {
+            fecha = "Cuando tú me digas ❤️";
+        } else {
+            // Darle formato bonito a la fecha
+            const partes = fecha.split('-');
+            fecha = ${partes[2]}/${partes[1]}/${partes[0]}; 
+        }
+        
+        document.getElementById('ticket-servicio').innerText = servicio;
+        document.getElementById('ticket-fecha').innerText = fecha;
+        
+        // Mostrar con efecto
+        const ticket = document.getElementById('ticket-vip');
+        ticket.style.display = 'block';
+        ticket.style.animation = 'latido 0.5s ease';
+    }
+
+    // --- LÓGICA JUEGO COTORRO ---
+    let puntosCotorro = 0;
+    let loopCotorro;
+    
+    function abrirJuegoCotorro() {
+        if(document.getElementById('menu-juegos')) document.getElementById('menu-juegos').style.display = 'none';
+        
+        // Esconder otros juegos
+        if(document.getElementById('juego-atrapa')) document.getElementById('juego-atrapa').style.display = 'none';
+        if(document.getElementById('juego-clics')) document.getElementById('juego-clics').style.display = 'none';
+        if(document.getElementById('juego-moto')) document.getElementById('juego-moto').style.display = 'none';
+        
+        document.getElementById('juego-cotorro').style.display = 'block';
+    }
+
+    function volverAlMenuDesdeCotorro() {
+        clearTimeout(loopCotorro);
+        document.getElementById('juego-cotorro').style.display = 'none';
+        document.getElementById('menu-juegos').style.display = 'block';
+    }
+
+    function iniciarCotorro() {
+        puntosCotorro = 0;
+        document.getElementById('puntos-cotorro').innerText = puntosCotorro;
+        document.getElementById('btn-iniciar-cotorro').style.display = 'none';
+        document.getElementById('el-cotorro').innerText = '🦜';
+        document.getElementById('el-cotorro').style.transform = 'translate(-50%, -50%) scale(1)';
+        moverSemilla();
+    }
+
+    function moverSemilla() {
+        const semilla = document.getElementById('la-semilla');
+        
+        // Posiciones aleatorias dentro del cuadro
+        const x = Math.floor(Math.random() * 80) + 10;
+        const y = Math.floor(Math.random() * 70) + 10;
+        
+        semilla.style.left = x + '%';
+        semilla.style.top = y + '%';
+        semilla.style.display = 'block';
+        
+        clearTimeout(loopCotorro);
+        
+        // Si no la atrapa en 1.2 segundos, se mueve a otro lado
+        loopCotorro = setTimeout(() => {
+            if(document.getElementById('juego-cotorro').style.display === 'block') {
+                moverSemilla();
+            }
+        }, 1200); 
+    }
+
+    function atraparSemilla() {
+        puntosCotorro++;
+        document.getElementById('puntos-cotorro').innerText = puntosCotorro;
+        
+        // Animación del cotorro comiendo
+        const cotorro = document.getElementById('el-cotorro');
+        cotorro.style.transform = 'translate(-50%, -50%) scale(1.3)';
+        setTimeout(() => { cotorro.style.transform = 'translate(-50%, -50%) scale(1)'; }, 200);
+        
+        document.getElementById('la-semilla').style.display = 'none';
+        clearTimeout(loopCotorro);
+        
+        if(puntosCotorro >= 10) {
+            cotorro.innerText = '🦜❤️';
+            cotorro.style.transform = 'translate(-50%, -50%) scale(1.4)';
+            setTimeout(() => {
+                alert("¡Lograste alimentar al cotorro! Ahora está súper feliz y a salvo.");
+                document.getElementById('btn-iniciar-cotorro').style.display = 'block';
+                document.getElementById('btn-iniciar-cotorro').innerText = '🔄 VOLVER A ALIMENTAR';
+            }, 300);
+        } else {
+            moverSemilla();
+        }
+    }
+</script>
+<!-- === FIN DEL PAQUETE 3 === -->
 </body>
 </html>
 
