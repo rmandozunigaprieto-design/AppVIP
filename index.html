@@ -518,7 +518,7 @@
         }
     }
 </script>
-    <div id="pantallas-nuevas-ocultas" style="display: none; padding: 15px;">
+<div id="pantallas-nuevas-ocultas" style="display: none; padding: 15px;">
     
     <div id="seccion-citas-vip" style="display: none; background: #ffffff; border-radius: 12px; padding: 25px; color: #333; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
         <h2 style="text-align: center; color: #d946ef; margin-top:0; font-family: 'Georgia', serif; font-size: 1.8rem;">✨ Cita VIP Lasher ✨</h2>
@@ -571,7 +571,7 @@
         if (dashboard) {
             const btnVip = document.createElement('div');
             btnVip.innerHTML = <button onclick="abrirCitasVIP()" style="width: 100%; margin-top: 15px; margin-bottom: 10px; border: 2px solid #ec4899; background: linear-gradient(45deg, #1f2937, #311b2b); padding: 15px; cursor: pointer; color: white; font-weight: bold; border-radius: 10px;">✨ CITA VIP LASHER</button>;
-            dashboard.appendChild(btnVip); // Lo pone al final de la lista del dashboard
+            dashboard.appendChild(btnVip);
         }
 
         // 2. Inyectar botón del Cotorro en Minijuegos
@@ -579,11 +579,11 @@
         if (menuJuegos) {
             const btnCotorro = document.createElement('div');
             btnCotorro.innerHTML = <button onclick="abrirJuegoCotorro()" style="width: 100%; margin-top: 15px; margin-bottom: 10px; border: 2px solid #34d399; background: #1e2532; padding: 15px; cursor: pointer; color: white; font-weight: bold; border-radius: 10px;">🦜 ALIMENTA AL COTORRO</button>;
-            menuJuegos.appendChild(btnCotorro); // Lo pone al final de la lista de juegos
+            menuJuegos.appendChild(btnCotorro);
         }
     })();
 
-    // --- LÓGICA DE CITAS VIP ---
+    // Lógica Citas VIP
     function abrirCitasVIP() {
         const dash = document.getElementById('vista-dashboard');
         if(dash) dash.style.display = 'none';
@@ -609,7 +609,7 @@
         document.getElementById('ticket-vip').style.display = 'block';
     }
 
-    // --- LÓGICA DEL COTORRO ---
+    // Lógica Juego Cotorro
     function abrirJuegoCotorro() {
         const mj = document.getElementById('menu-juegos');
         if(mj) mj.style.display = 'none';
@@ -658,6 +658,7 @@
             moverSemilla();
         }
     }
+</script>
 </script>
 </body>
 </html>
