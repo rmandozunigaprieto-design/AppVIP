@@ -365,6 +365,7 @@
             try {
                 const respuesta = await fetch('logros.json?v=' + Date.now());
                 const datos = await respuesta.json();
+                console.log("El mensaje que está leyendo el portal es:", datos.mensaje_emergencia);
                 document.getElementById('fecha-logros').innerText = "Fecha de corte: " + datos.fecha;
                 document.getElementById('estatus-logros').innerText = "Estatus: " + datos.estatus;
                 if(datos.mensaje_emergencia) mensajeSorpresa = datos.mensaje_emergencia;
