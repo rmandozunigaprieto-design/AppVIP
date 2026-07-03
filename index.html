@@ -612,9 +612,8 @@
     }
 
     function abrirJuegoCotorro() {
+        // CORRECCIÓN: Solo escondemos el menú de botones, NO toda la sección.
         if(document.getElementById('menu-juegos')) document.getElementById('menu-juegos').style.display = 'none';
-        const secciones = document.querySelectorAll('.seccion-contenido');
-        secciones.forEach(s => s.style.display = 'none');
         document.getElementById('juego-cotorro').style.display = 'block';
     }
 
