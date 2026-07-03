@@ -518,104 +518,11 @@
         }
     }
 </script>
-<!-- === PAQUETE DE SEGURIDAD TOTAL (NO SE ESCONDEN POR NADA) === -->
-
-<!-- Pantallas Ocultas (Estas siempre existen) -->
-<div id="pantallas-nuevas-ocultas" style="display: none; padding: 15px;">
-    <!-- (Tus pantallas de Citas y Cotorro siguen igual) -->
-    <div id="seccion-citas-vip" style="display: none; background: #ffffff; border-radius: 12px; padding: 25px; color: #333; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-        <h2 style="text-align: center; color: #d946ef; font-family: 'Georgia', serif;">✨ Cita VIP Lasher ✨</h2>
-        <select id="servicio-vip" style="width: 100%; padding: 12px; margin-top: 8px;">
-            <option>Día de películas 🍿</option><option>Día de malteadas 🥤</option><option>Día de cine 🎬</option>
-        </select>
-        <input type="date" id="fecha-vip" style="width: 100%; padding: 12px; margin-top: 8px;">
-        <button onclick="generarTicketVIP()" style="width: 100%; padding: 15px; background: #ec4899; color: white; border: none; margin-top: 10px;">📅 AGENDAR CITA</button>
-        <div id="ticket-vip" style="display: none; padding: 20px; border: 2px dashed #ec4899; margin-top: 10px; text-align: center;">
-            <h3>🎟️ ¡Cita Confirmada! 🎟️</h3>
-            <p>Servicio: <span id="ticket-servicio"></span></p>
-            <p>Fecha: <span id="ticket-fecha"></span></p>
-        </div>
-        <button onclick="volverInicioVIP()" style="width: 100%; padding: 12px; margin-top: 10px;">⬅️ Volver al Inicio</button>
-    </div>
-
-    <div id="juego-cotorro" style="display: none; text-align: center; background: #1e2532; padding: 20px; color: white;">
-        <h2>El Rescate del Cotorro 🦜</h2>
-        <div id="area-cotorro" style="height: 200px; background: #111; border: 3px solid #4b5563; position: relative;">
-            <div id="el-cotorro" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 3rem;">🦜</div>
-            <div id="la-semilla" onclick="atraparSemilla()" style="position: absolute; font-size: 2rem; display: none; cursor: pointer;">🌻</div>
-        </div>
-        <div style="font-size: 1.2rem;">Semillas: <span id="puntos-cotorro">0</span> / 10</div>
-        <button id="btn-iniciar-cotorro" onclick="iniciarCotorro()" style="padding: 15px; background: #34d399; width: 100%; margin-top: 10px;">▶️ DAR DE COMER</button>
-        <button onclick="volverAlMenuCotorro()" style="width: 100%; padding: 10px; margin-top: 10px;">⬅️ Volver a Juegos</button>
-    </div>
+<!-- === PRUEBA DE VIDA === -->
+<div style="background: red; padding: 50px; text-align: center; color: white; font-size: 20px; font-weight: bold; margin-top: 50px;">
+    ¡SI VES ESTO, EL ARCHIVO SÍ ESTÁ ACTUALIZADO!
 </div>
-
-<script>
-    window.addEventListener('load', () => {
-        console.log("Inyectando botones...");
-
-        // 1. Inyectar Citas VIP
-        const dashboard = document.getElementById('vista-dashboard');
-        const btnVipHTML = <div id="cont-btn-vip" style="margin: 15px 0;"><button onclick="abrirCitasVIP()" style="width: 100%; border: 2px solid #ec4899; background: #311b2b; padding: 15px; cursor: pointer; color: white; font-weight: bold; border-radius: 10px;">✨ CITA VIP LASHER</button></div>;
-        
-        if (dashboard) {
-            dashboard.insertAdjacentHTML('afterbegin', btnVipHTML);
-        } else {
-            console.warn("No encontré 'vista-dashboard', poniendo al final.");
-            document.body.insertAdjacentHTML('beforeend', btnVipHTML);
-        }
-
-        // 2. Inyectar Cotorro
-        const menuJuegos = document.getElementById('menu-juegos');
-        const btnCotorroHTML = <div id="cont-btn-cotorro" style="margin: 15px 0;"><button onclick="abrirJuegoCotorro()" style="width: 100%; border: 2px solid #34d399; background: #1e2532; padding: 15px; cursor: pointer; color: white; font-weight: bold; border-radius: 10px;">🦜 ALIMENTA AL COTORRO</button></div>;
-        
-        if (menuJuegos) {
-            menuJuegos.insertAdjacentHTML('beforeend', btnCotorroHTML);
-        } else {
-            console.warn("No encontré 'menu-juegos', poniendo al final.");
-            document.body.insertAdjacentHTML('beforeend', btnCotorroHTML);
-        }
-    });
-
-    // --- LÓGICA (Funciona sin importar dónde estén) ---
-    function abrirCitasVIP() {
-        document.getElementById('pantallas-nuevas-ocultas').style.display = 'block';
-        document.getElementById('seccion-citas-vip').style.display = 'block';
-        document.getElementById('juego-cotorro').style.display = 'none';
-        if(document.getElementById('vista-dashboard')) document.getElementById('vista-dashboard').style.display = 'none';
-    }
-
-    function volverInicioVIP() {
-        document.getElementById('pantallas-nuevas-ocultas').style.display = 'none';
-        document.getElementById('seccion-citas-vip').style.display = 'none';
-        if(document.getElementById('vista-dashboard')) document.getElementById('vista-dashboard').style.display = 'block';
-    }
-
-    function abrirJuegoCotorro() {
-        document.getElementById('pantallas-nuevas-ocultas').style.display = 'block';
-        document.getElementById('juego-cotorro').style.display = 'block';
-        document.getElementById('seccion-citas-vip').style.display = 'none';
-        if(document.getElementById('menu-juegos')) document.getElementById('menu-juegos').style.display = 'none';
-    }
-
-    function volverAlMenuCotorro() {
-        document.getElementById('pantallas-nuevas-ocultas').style.display = 'none';
-        document.getElementById('juego-cotorro').style.display = 'none';
-        if(document.getElementById('menu-juegos')) document.getElementById('menu-juegos').style.display = 'block';
-        clearTimeout(loopCotorro);
-    }
-    
-    // Funciones extras (ticket, semillas, etc) se quedan igual...
-    function generarTicketVIP() {
-        document.getElementById('ticket-servicio').innerText = document.getElementById('servicio-vip').value;
-        document.getElementById('ticket-fecha').innerText = document.getElementById('fecha-vip').value || "Hoy ❤️";
-        document.getElementById('ticket-vip').style.display = 'block';
-    }
-    let puntosCotorro = 0, loopCotorro;
-    function iniciarCotorro() { puntosCotorro = 0; document.getElementById('puntos-cotorro').innerText = 0; document.getElementById('btn-iniciar-cotorro').style.display = 'none'; moverSemilla(); }
-    function moverSemilla() { const s = document.getElementById('la-semilla'); s.style.left = (Math.random()*80+10)+'%'; s.style.top = (Math.random()*70+10)+'%'; s.style.display = 'block'; clearTimeout(loopCotorro); loopCotorro = setTimeout(moverSemilla, 1200); }
-    function atraparSemilla() { puntosCotorro++; document.getElementById('puntos-cotorro').innerText = puntosCotorro; document.getElementById('la-semilla').style.display = 'none'; if(puntosCotorro>=10){ alert("¡Cotorro feliz!"); document.getElementById('btn-iniciar-cotorro').style.display = 'block'; } }
-</script>
+<!-- ====================== -->
 </script>
 </body>
 </html>
