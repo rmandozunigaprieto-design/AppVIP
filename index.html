@@ -681,6 +681,7 @@
 
 <!-- LÓGICA Y TELETRANSPORTADOR -->
 <script>
+  <script>
     window.addEventListener('DOMContentLoaded', (event) => {
         const menuJuegos = document.getElementById('menu-juegos');
         const btnSimon = document.getElementById('btn-simon-teleport');
@@ -700,7 +701,7 @@
     function volverAlMenuSimon() {
         document.getElementById('juego-simon').style.display = 'none';
         if(document.getElementById('menu-juegos')) document.getElementById('menu-juegos').style.display = 'block';
-        secuenciaSimon = []; // Apaga el juego si se sale
+        secuenciaSimon = [];
     }
 
     // --- LÓGICA DEL JUEGO ---
@@ -735,12 +736,13 @@
         });
 
         setTimeout(() => {
-            bloqueadoSimon = false; // Le toca al usuario
+            bloqueadoSimon = false;
         }, delay);
     }
 
     function iluminarBoton(indice) {
-        const boton = document.getElementById(btn-simon-${indice});
+        // CORRECCIÓN 1: Suma simple en lugar de comillas raras
+        const boton = document.getElementById('btn-simon-' + indice);
         if(boton) {
             boton.style.opacity = '1';
             boton.style.transform = 'scale(1.1)';
@@ -763,8 +765,8 @@
                 setTimeout(siguienteNivelSimon, 1000);
             }
         } else {
-            // Perdió
-            alert(¡Te equivocaste mi amor! Llegaste al nivel ${secuenciaSimon.length}.);
+            // CORRECCIÓN 2: Suma simple en el mensaje para que no marque error
+            alert("¡Te equivocaste mi amor! Llegaste al nivel " + secuenciaSimon.length + ".");
             document.getElementById('btn-iniciar-simon').style.display = 'block';
             document.getElementById('btn-iniciar-simon').innerText = '🔄 REINTENTAR';
             bloqueadoSimon = true;
