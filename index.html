@@ -651,5 +651,126 @@
         } else { moverSemilla(); }
     }
 </script>
+    <!-- === PAQUETE NUEVO MINIJUEGO: SIMÓN DICE (BEAUTY EDITION) === -->
+<div id="caja-fuerte-simon" style="display: none;">
+
+    <!-- 1. BOTÓN DEL JUEGO (Se teletransporta al menú de juegos) -->
+    <div id="btn-simon-teleport" style="margin-top: 10px;">
+        <button class="boton-tarjeta" onclick="abrirJuegoSimon()" style="width: 100%; border: 2px solid #ec4899; background: #1e2532; padding: 15px; cursor: pointer; color: white; font-weight: bold; border-radius: 10px;">💅 SECUENCIA PERFECTA</button>
+    </div>
+
+    <!-- 2. PANTALLA DEL JUEGO (Se teletransporta a la sección de juegos) -->
+    <div id="juego-simon" style="display: none; text-align: center; margin-top: 20px; background: #1e2532; padding: 20px; border-radius: 12px; border: 1px solid #ec4899; color: white;">
+        <h2 style="margin-top: 0; color: #ec4899;">Secuencia Perfecta ✨</h2>
+        <p style="font-size: 0.9rem; color: #9ca3af; margin-bottom: 15px;">Repite el orden exacto de los botones.</p>
+        
+        <!-- Tablero de 4 Botones -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 250px; margin: 0 auto 20px auto;">
+            <div id="btn-simon-0" onclick="presionarBoton(0)" style="height: 100px; background: #be185d; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 3rem; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: all 0.1s; opacity: 0.7;">💅</div>
+            <div id="btn-simon-1" onclick="presionarBoton(1)" style="height: 100px; background: #7c3aed; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 3rem; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: all 0.1s; opacity: 0.7;">👁️</div>
+            <div id="btn-simon-2" onclick="presionarBoton(2)" style="height: 100px; background: #0d9488; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 3rem; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: all 0.1s; opacity: 0.7;">✨</div>
+            <div id="btn-simon-3" onclick="presionarBoton(3)" style="height: 100px; background: #d97706; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 3rem; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: all 0.1s; opacity: 0.7;">💖</div>
+        </div>
+
+        <div style="font-weight: 800; font-size: 1.2rem; margin-bottom: 15px;">Nivel Actual: <span id="nivel-simon" style="color: #ec4899;">0</span></div>
+        <button id="btn-iniciar-simon" onclick="iniciarSimon()" style="width: 100%; padding: 15px; border-radius: 10px; background: #ec4899; color: white; border: none; font-weight: 900; margin-bottom: 10px; cursor: pointer;">▶️ INICIAR RETO</button>
+        <button onclick="volverAlMenuSimon()" style="width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #ccc; background: transparent; color: white; cursor: pointer;">⬅️ Volver a Juegos</button>
+    </div>
+
+</div>
+
+<!-- LÓGICA Y TELETRANSPORTADOR -->
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const menuJuegos = document.getElementById('menu-juegos');
+        const btnSimon = document.getElementById('btn-simon-teleport');
+        if (menuJuegos && btnSimon) { menuJuegos.appendChild(btnSimon); }
+
+        const seccionJuegos = document.getElementById('seccion-juegos');
+        const juegoSimon = document.getElementById('juego-simon');
+        if (seccionJuegos && juegoSimon) { seccionJuegos.appendChild(juegoSimon); }
+    });
+
+    // --- NAVEGACIÓN ---
+    function abrirJuegoSimon() {
+        if(document.getElementById('menu-juegos')) document.getElementById('menu-juegos').style.display = 'none';
+        document.getElementById('juego-simon').style.display = 'block';
+    }
+
+    function volverAlMenuSimon() {
+        document.getElementById('juego-simon').style.display = 'none';
+        if(document.getElementById('menu-juegos')) document.getElementById('menu-juegos').style.display = 'block';
+        secuenciaSimon = []; // Apaga el juego si se sale
+    }
+
+    // --- LÓGICA DEL JUEGO ---
+    let secuenciaSimon = [];
+    let pasoUsuarioSimon = 0;
+    let bloqueadoSimon = true;
+
+    function iniciarSimon() {
+        secuenciaSimon = [];
+        pasoUsuarioSimon = 0;
+        document.getElementById('nivel-simon').innerText = 0;
+        document.getElementById('btn-iniciar-simon').style.display = 'none';
+        setTimeout(siguienteNivelSimon, 500);
+    }
+
+    function siguienteNivelSimon() {
+        pasoUsuarioSimon = 0;
+        secuenciaSimon.push(Math.floor(Math.random() * 4));
+        document.getElementById('nivel-simon').innerText = secuenciaSimon.length;
+        reproducirSecuencia();
+    }
+
+    function reproducirSecuencia() {
+        bloqueadoSimon = true;
+        let delay = 0;
+        
+        secuenciaSimon.forEach((colorIndex, index) => {
+            setTimeout(() => {
+                iluminarBoton(colorIndex);
+            }, delay);
+            delay += 600; // Velocidad de la secuencia
+        });
+
+        setTimeout(() => {
+            bloqueadoSimon = false; // Le toca al usuario
+        }, delay);
+    }
+
+    function iluminarBoton(indice) {
+        const boton = document.getElementById(btn-simon-${indice});
+        if(boton) {
+            boton.style.opacity = '1';
+            boton.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                boton.style.opacity = '0.7';
+                boton.style.transform = 'scale(1)';
+            }, 300);
+        }
+    }
+
+    function presionarBoton(indice) {
+        if (bloqueadoSimon) return;
+
+        iluminarBoton(indice);
+
+        if (indice === secuenciaSimon[pasoUsuarioSimon]) {
+            pasoUsuarioSimon++;
+            if (pasoUsuarioSimon === secuenciaSimon.length) {
+                bloqueadoSimon = true;
+                setTimeout(siguienteNivelSimon, 1000);
+            }
+        } else {
+            // Perdió
+            alert(¡Te equivocaste mi amor! Llegaste al nivel ${secuenciaSimon.length}.);
+            document.getElementById('btn-iniciar-simon').style.display = 'block';
+            document.getElementById('btn-iniciar-simon').innerText = '🔄 REINTENTAR';
+            bloqueadoSimon = true;
+        }
+    }
+</script>
+<!-- === FIN PAQUETE SIMÓN DICE === -->
 </body>
 </html>
