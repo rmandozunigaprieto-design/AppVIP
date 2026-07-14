@@ -651,15 +651,15 @@
         } else { moverSemilla(); }
     }
 </script>
-    <!-- === PAQUETE NUEVO MINIJUEGO: SIMÓN DICE (BEAUTY EDITION) === -->
+ <!-- === PAQUETE NUEVO MINIJUEGO: SIMÓN DICE (BEAUTY EDITION) === -->
 <div id="caja-fuerte-simon" style="display: none;">
 
-    <!-- 1. BOTÓN DEL JUEGO (Se teletransporta al menú de juegos) -->
+    <!-- 1. BOTÓN DEL JUEGO -->
     <div id="btn-simon-teleport" style="margin-top: 10px;">
         <button class="boton-tarjeta" onclick="abrirJuegoSimon()" style="width: 100%; border: 2px solid #ec4899; background: #1e2532; padding: 15px; cursor: pointer; color: white; font-weight: bold; border-radius: 10px;">💅 SECUENCIA PERFECTA</button>
     </div>
 
-    <!-- 2. PANTALLA DEL JUEGO (Se teletransporta a la sección de juegos) -->
+    <!-- 2. PANTALLA DEL JUEGO -->
     <div id="juego-simon" style="display: none; text-align: center; margin-top: 20px; background: #1e2532; padding: 20px; border-radius: 12px; border: 1px solid #ec4899; color: white;">
         <h2 style="margin-top: 0; color: #ec4899;">Secuencia Perfecta ✨</h2>
         <p style="font-size: 0.9rem; color: #9ca3af; margin-bottom: 15px;">Repite el orden exacto de los botones.</p>
@@ -681,7 +681,6 @@
 
 <!-- LÓGICA Y TELETRANSPORTADOR -->
 <script>
-  <script>
     window.addEventListener('DOMContentLoaded', (event) => {
         const menuJuegos = document.getElementById('menu-juegos');
         const btnSimon = document.getElementById('btn-simon-teleport');
@@ -692,7 +691,6 @@
         if (seccionJuegos && juegoSimon) { seccionJuegos.appendChild(juegoSimon); }
     });
 
-    // --- NAVEGACIÓN ---
     function abrirJuegoSimon() {
         if(document.getElementById('menu-juegos')) document.getElementById('menu-juegos').style.display = 'none';
         document.getElementById('juego-simon').style.display = 'block';
@@ -701,10 +699,9 @@
     function volverAlMenuSimon() {
         document.getElementById('juego-simon').style.display = 'none';
         if(document.getElementById('menu-juegos')) document.getElementById('menu-juegos').style.display = 'block';
-        secuenciaSimon = [];
+        secuenciaSimon = []; 
     }
 
-    // --- LÓGICA DEL JUEGO ---
     let secuenciaSimon = [];
     let pasoUsuarioSimon = 0;
     let bloqueadoSimon = true;
@@ -728,20 +725,19 @@
         bloqueadoSimon = true;
         let delay = 0;
         
-        secuenciaSimon.forEach((colorIndex, index) => {
+        secuenciaSimon.forEach((colorIndex) => {
             setTimeout(() => {
                 iluminarBoton(colorIndex);
             }, delay);
-            delay += 600; // Velocidad de la secuencia
+            delay += 600; 
         });
 
         setTimeout(() => {
-            bloqueadoSimon = false;
+            bloqueadoSimon = false; 
         }, delay);
     }
 
     function iluminarBoton(indice) {
-        // CORRECCIÓN 1: Suma simple en lugar de comillas raras
         const boton = document.getElementById('btn-simon-' + indice);
         if(boton) {
             boton.style.opacity = '1';
@@ -765,7 +761,6 @@
                 setTimeout(siguienteNivelSimon, 1000);
             }
         } else {
-            // CORRECCIÓN 2: Suma simple en el mensaje para que no marque error
             alert("¡Te equivocaste mi amor! Llegaste al nivel " + secuenciaSimon.length + ".");
             document.getElementById('btn-iniciar-simon').style.display = 'block';
             document.getElementById('btn-iniciar-simon').innerText = '🔄 REINTENTAR';
