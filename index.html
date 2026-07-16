@@ -769,5 +769,87 @@
     }
 </script>
 <!-- === FIN PAQUETE SIMÓN DICE === -->
+    <!-- === PAQUETE: CÓDICE COLABORATIVO + MISIÓN APOLO === -->
+<div id="caja-fuerte-doble" style="display: none;">
+
+    <!-- 1. CÓDICE DE NOVELAS -->
+    <div id="btn-codice-teleport" style="margin-top: 10px;">
+        <button class="boton-tarjeta" onclick="abrirCodice()" style="width: 100%; border: 2px solid #8b5cf6; background: #1e2532; padding: 15px; cursor: pointer; color: white; font-weight: bold; border-radius: 10px;">📖 CÓDICE COMPARTIDO</button>
+    </div>
+    <div id="pantalla-codice" style="display: none; background: #1e2532; padding: 20px; border-radius: 12px; border: 1px solid #8b5cf6; color: white; text-align: center;">
+        <h2 style="color: #8b5cf6;">Nuestro Códice ✍️</h2>
+        <textarea id="texto-codice" style="width: 90%; height: 150px; border-radius: 10px; padding: 10px; border: 1px solid #4b5563; background: #111; color: white;"></textarea>
+        <button onclick="guardarCodice()" style="width: 100%; padding: 10px; background: #8b5cf6; color: white; border: none; border-radius: 8px; margin-top: 10px; cursor: pointer;">💾 GUARDAR CAPÍTULO</button>
+        <button onclick="cerrarCodice()" style="width: 100%; padding: 10px; margin-top:10px; border-radius: 8px; border: 1px solid #ccc; background: transparent; color: white; cursor: pointer;">⬅️ Volver</button>
+    </div>
+
+    <!-- 2. MISIÓN APOLO -->
+    <div id="btn-apolo-teleport" style="margin-top: 10px;">
+        <button class="boton-tarjeta" onclick="abrirApolo()" style="width: 100%; border: 2px solid #3b82f6; background: #1e2532; padding: 15px; cursor: pointer; color: white; font-weight: bold; border-radius: 10px;">🚀 MISIÓN APOLO</button>
+    </div>
+    <div id="pantalla-apolo" style="display: none; background: #1e2532; padding: 20px; border-radius: 12px; border: 1px solid #3b82f6; color: white; text-align: center;">
+        <h2 style="color: #3b82f6;">Misión Apolo 🚀</h2>
+        <div id="juego-apolo" style="position: relative; width: 100%; height: 250px; background: #000; border: 2px solid #333; overflow: hidden; margin-bottom: 10px;">
+            <div id="nave" style="position: absolute; bottom: 10px; left: 50%; font-size: 2rem; transition: left 0.1s;">🚀</div>
+            <div id="meteorito" style="position: absolute; top: -50px; font-size: 2rem;">☄️</div>
+        </div>
+        <button onclick="moverNave(-10)" style="padding: 10px 20px;">⬅️</button>
+        <button onclick="moverNave(10)" style="padding: 10px 20px;">➡️</button>
+        <button onclick="cerrarApolo()" style="display:block; width:100%; margin-top:10px; padding:10px; background:transparent; color:white; border:1px solid #ccc; border-radius:8px;">⬅️ Salir</button>
+    </div>
+</div>
+
+<script>
+    // TELETRANSPORTADOR
+    window.addEventListener('DOMContentLoaded', () => {
+        const menuJuegos = document.getElementById('menu-juegos');
+        const vistaDashboard = document.getElementById('vista-dashboard');
+        
+        // Mueve los botones al menú
+        if (menuJuegos) {
+            menuJuegos.appendChild(document.getElementById('btn-codice-teleport'));
+            menuJuegos.appendChild(document.getElementById('btn-apolo-teleport'));
+        }
+        // Mueve las pantallas a la sección de juegos
+        const seccionJuegos = document.getElementById('seccion-juegos');
+        if (seccionJuegos) {
+            seccionJuegos.appendChild(document.getElementById('pantalla-codice'));
+            seccionJuegos.appendChild(document.getElementById('pantalla-apolo'));
+        }
+        
+        // Carga inicial del Códice
+        document.getElementById('texto-codice').value = localStorage.getItem('miNovela') || "Empieza a escribir nuestra historia...";
+    });
+
+    // LÓGICA CÓDICE
+    function abrirCodice() { 
+        document.getElementById('menu-juegos').style.display = 'none'; 
+        document.getElementById('pantalla-codice').style.display = 'block'; 
+    }
+    function cerrarCodice() { 
+        document.getElementById('menu-juegos').style.display = 'block'; 
+        document.getElementById('pantalla-codice').style.display = 'none'; 
+    }
+    function guardarCodice() {
+        localStorage.setItem('miNovela', document.getElementById('texto-codice').value);
+        alert("¡Guardado en el códice mi amor! ❤️");
+    }
+
+    // LÓGICA APOLO
+    let posNave = 50;
+    function abrirApolo() { 
+        document.getElementById('menu-juegos').style.display = 'none'; 
+        document.getElementById('pantalla-apolo').style.display = 'block';
+    }
+    function cerrarApolo() { 
+        document.getElementById('menu-juegos').style.display = 'block'; 
+        document.getElementById('pantalla-apolo').style.display = 'none'; 
+    }
+    function moverNave(dir) {
+        posNave += dir;
+        document.getElementById('nave').style.left = posNave + '%';
+    }
+</script>
+<!-- === FIN PAQUETE DOBLE === -->
 </body>
 </html>
