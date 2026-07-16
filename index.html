@@ -769,87 +769,168 @@
     }
 </script>
 <!-- === FIN PAQUETE SIMÓN DICE === -->
-    <!-- === PAQUETE: CÓDICE COLABORATIVO + MISIÓN APOLO === -->
-<div id="caja-fuerte-doble" style="display: none;">
+   <!-- === PAQUETE MEJORADO: NOVELA INDEPENDIENTE + APOLO JUGABLE === -->
+<div id="caja-fuerte-actualizada" style="display: none;">
 
-    <!-- 1. CÓDICE DE NOVELAS -->
-    <div id="btn-codice-teleport" style="margin-top: 10px;">
-        <button class="boton-tarjeta" onclick="abrirCodice()" style="width: 100%; border: 2px solid #8b5cf6; background: #1e2532; padding: 15px; cursor: pointer; color: white; font-weight: bold; border-radius: 10px;">📖 CÓDICE COMPARTIDO</button>
-    </div>
-    <div id="pantalla-codice" style="display: none; background: #1e2532; padding: 20px; border-radius: 12px; border: 1px solid #8b5cf6; color: white; text-align: center;">
-        <h2 style="color: #8b5cf6;">Nuestro Códice ✍️</h2>
-        <textarea id="texto-codice" style="width: 90%; height: 150px; border-radius: 10px; padding: 10px; border: 1px solid #4b5563; background: #111; color: white;"></textarea>
-        <button onclick="guardarCodice()" style="width: 100%; padding: 10px; background: #8b5cf6; color: white; border: none; border-radius: 8px; margin-top: 10px; cursor: pointer;">💾 GUARDAR CAPÍTULO</button>
-        <button onclick="cerrarCodice()" style="width: 100%; padding: 10px; margin-top:10px; border-radius: 8px; border: 1px solid #ccc; background: transparent; color: white; cursor: pointer;">⬅️ Volver</button>
+    <!-- ==========================================
+         PARTE 1: SECCIÓN DE LA NOVELA
+         ========================================== -->
+    <!-- Botón principal (Se irá al Dashboard principal) -->
+    <div id="btn-novela-dashboard" style="margin-top: 15px;">
+        <button class="boton-tarjeta" onclick="abrirNovela()" style="width: 100%; border: 2px solid #8b5cf6; background: #1e2532; padding: 15px; cursor: pointer; color: white; font-weight: bold; border-radius: 10px; font-size: 1.1rem;">📖 NUESTRA NOVELA</button>
     </div>
 
-    <!-- 2. MISIÓN APOLO -->
+    <!-- Pantalla Principal de la Novela -->
+    <div id="seccion-novela" class="seccion-contenido" style="display: none; padding: 20px;">
+        <div style="background: #1e2532; padding: 20px; border-radius: 12px; border: 1px solid #8b5cf6; color: white; text-align: center;">
+            <h2 style="color: #8b5cf6; margin-top: 0;">Nuestra Historia 📖✨</h2>
+            <p style="font-size: 0.9rem; color: #9ca3af; margin-bottom: 15px;">Escribe un nuevo capítulo de nuestra vida.</p>
+            
+            <textarea id="texto-novela" style="width: 100%; height: 250px; border-radius: 10px; padding: 15px; border: 1px solid #4b5563; background: #111; color: white; font-family: sans-serif; resize: none; box-sizing: border-box;"></textarea>
+            
+            <button onclick="guardarNovela()" style="width: 100%; padding: 15px; background: #8b5cf6; color: white; border: none; border-radius: 10px; margin-top: 15px; cursor: pointer; font-weight: bold;">💾 GUARDAR CAPÍTULO</button>
+            <button onclick="cerrarNovela()" style="width: 100%; padding: 10px; margin-top:10px; border-radius: 10px; border: 1px solid #ccc; background: transparent; color: white; cursor: pointer;">⬅️ Volver al Menú Principal</button>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         PARTE 2: MINIJUEGO APOLO COMPLETADO
+         ========================================== -->
+    <!-- Botón del juego (Se irá a la sección de Juegos) -->
     <div id="btn-apolo-teleport" style="margin-top: 10px;">
         <button class="boton-tarjeta" onclick="abrirApolo()" style="width: 100%; border: 2px solid #3b82f6; background: #1e2532; padding: 15px; cursor: pointer; color: white; font-weight: bold; border-radius: 10px;">🚀 MISIÓN APOLO</button>
     </div>
-    <div id="pantalla-apolo" style="display: none; background: #1e2532; padding: 20px; border-radius: 12px; border: 1px solid #3b82f6; color: white; text-align: center;">
-        <h2 style="color: #3b82f6;">Misión Apolo 🚀</h2>
-        <div id="juego-apolo" style="position: relative; width: 100%; height: 250px; background: #000; border: 2px solid #333; overflow: hidden; margin-bottom: 10px;">
-            <div id="nave" style="position: absolute; bottom: 10px; left: 50%; font-size: 2rem; transition: left 0.1s;">🚀</div>
-            <div id="meteorito" style="position: absolute; top: -50px; font-size: 2rem;">☄️</div>
+
+    <!-- Pantalla del Juego -->
+    <div id="pantalla-apolo" style="display: none; background: #1e2532; padding: 20px; border-radius: 12px; border: 1px solid #3b82f6; color: white; text-align: center; margin-top: 20px;">
+        <h2 style="color: #3b82f6; margin-top: 0;">Misión Apolo 🚀</h2>
+        <div style="font-weight: 800; font-size: 1.2rem; margin-bottom: 10px;">Puntuación: <span id="score-apolo" style="color: #3b82f6;">0</span></div>
+        
+        <div id="area-apolo" style="position: relative; width: 100%; height: 250px; background: #000; border: 2px solid #4b5563; border-radius: 10px; overflow: hidden; margin-bottom: 15px;">
+            <div id="nave-apolo" style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 2.5rem; transition: left 0.1s;">🚀</div>
+            <div id="meteorito-apolo" style="position: absolute; top: -50px; left: 50%; transform: translateX(-50%); font-size: 2rem; display: none;">☄️</div>
         </div>
-        <button onclick="moverNave(-10)" style="padding: 10px 20px;">⬅️</button>
-        <button onclick="moverNave(10)" style="padding: 10px 20px;">➡️</button>
-        <button onclick="cerrarApolo()" style="display:block; width:100%; margin-top:10px; padding:10px; background:transparent; color:white; border:1px solid #ccc; border-radius:8px;">⬅️ Salir</button>
+        
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <button onclick="moverNave(-15)" style="flex: 1; padding: 15px; font-size: 1.5rem; background: #374151; color: white; border: none; border-radius: 10px; cursor: pointer;">⬅️</button>
+            <button onclick="moverNave(15)" style="flex: 1; padding: 15px; font-size: 1.5rem; background: #374151; color: white; border: none; border-radius: 10px; cursor: pointer;">➡️</button>
+        </div>
+        
+        <button id="btn-iniciar-apolo" onclick="iniciarApolo()" style="width: 100%; padding: 15px; background: #3b82f6; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-bottom: 10px;">▶️ INICIAR MISIÓN</button>
+        <button onclick="cerrarApolo()" style="width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #ccc; background: transparent; color: white; cursor: pointer;">⬅️ Volver a Juegos</button>
     </div>
 </div>
 
+<!-- SCRIPT DE TELETRANSPORTE Y LÓGICAS (TODO EN FUNCIONES TRADICIONALES PARA CERO ERRORES) -->
 <script>
-    // TELETRANSPORTADOR
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('DOMContentLoaded', function(event) {
+        // 1. Teletransporte de la Novela (Al Menú Principal)
+        const dashboard = document.getElementById('vista-dashboard');
+        const btnNovela = document.getElementById('btn-novela-dashboard');
+        if (dashboard && btnNovela) { dashboard.appendChild(btnNovela); }
+        
+        const seccionNovela = document.getElementById('seccion-novela');
+        if (seccionNovela) { document.body.appendChild(seccionNovela); }
+        
+        // Cargar texto guardado si ya había escrito algo
+        const textoGuardado = localStorage.getItem('miNovela');
+        if(textoGuardado) { document.getElementById('texto-novela').value = textoGuardado; }
+
+        // 2. Teletransporte de Apolo (A los Juegos)
         const menuJuegos = document.getElementById('menu-juegos');
-        const vistaDashboard = document.getElementById('vista-dashboard');
+        const btnApolo = document.getElementById('btn-apolo-teleport');
+        if (menuJuegos && btnApolo) { menuJuegos.appendChild(btnApolo); }
         
-        // Mueve los botones al menú
-        if (menuJuegos) {
-            menuJuegos.appendChild(document.getElementById('btn-codice-teleport'));
-            menuJuegos.appendChild(document.getElementById('btn-apolo-teleport'));
-        }
-        // Mueve las pantallas a la sección de juegos
         const seccionJuegos = document.getElementById('seccion-juegos');
-        if (seccionJuegos) {
-            seccionJuegos.appendChild(document.getElementById('pantalla-codice'));
-            seccionJuegos.appendChild(document.getElementById('pantalla-apolo'));
-        }
-        
-        // Carga inicial del Códice
-        document.getElementById('texto-codice').value = localStorage.getItem('miNovela') || "Empieza a escribir nuestra historia...";
+        const pantallaApolo = document.getElementById('pantalla-apolo');
+        if (seccionJuegos && pantallaApolo) { seccionJuegos.appendChild(pantallaApolo); }
     });
 
-    // LÓGICA CÓDICE
-    function abrirCodice() { 
-        document.getElementById('menu-juegos').style.display = 'none'; 
-        document.getElementById('pantalla-codice').style.display = 'block'; 
+    // --- LÓGICA NOVELA ---
+    function abrirNovela() {
+        if(document.getElementById('vista-dashboard')) document.getElementById('vista-dashboard').style.display = 'none';
+        const secciones = document.querySelectorAll('.seccion-contenido');
+        secciones.forEach(function(s) { s.style.display = 'none'; });
+        document.getElementById('seccion-novela').style.display = 'block';
     }
-    function cerrarCodice() { 
-        document.getElementById('menu-juegos').style.display = 'block'; 
-        document.getElementById('pantalla-codice').style.display = 'none'; 
+    function cerrarNovela() {
+        document.getElementById('seccion-novela').style.display = 'none';
+        if(document.getElementById('vista-dashboard')) document.getElementById('vista-dashboard').style.display = 'block';
     }
-    function guardarCodice() {
-        localStorage.setItem('miNovela', document.getElementById('texto-codice').value);
-        alert("¡Guardado en el códice mi amor! ❤️");
+    function guardarNovela() {
+        localStorage.setItem('miNovela', document.getElementById('texto-novela').value);
+        alert("¡Capítulo guardado con éxito mi amor! ❤️📖");
     }
 
-    // LÓGICA APOLO
+    // --- LÓGICA APOLO ---
     let posNave = 50;
-    function abrirApolo() { 
-        document.getElementById('menu-juegos').style.display = 'none'; 
+    let posMeteoritoY = -50;
+    let posMeteoritoX = 50;
+    let scoreApolo = 0;
+    let loopApolo;
+    let velocidadMeteorito = 5;
+
+    function abrirApolo() {
+        if(document.getElementById('menu-juegos')) document.getElementById('menu-juegos').style.display = 'none';
         document.getElementById('pantalla-apolo').style.display = 'block';
     }
-    function cerrarApolo() { 
-        document.getElementById('menu-juegos').style.display = 'block'; 
-        document.getElementById('pantalla-apolo').style.display = 'none'; 
+    function cerrarApolo() {
+        document.getElementById('pantalla-apolo').style.display = 'none';
+        if(document.getElementById('menu-juegos')) document.getElementById('menu-juegos').style.display = 'block';
+        clearInterval(loopApolo);
     }
     function moverNave(dir) {
         posNave += dir;
-        document.getElementById('nave').style.left = posNave + '%';
+        if (posNave < 5) posNave = 5;
+        if (posNave > 95) posNave = 95;
+        document.getElementById('nave-apolo').style.left = posNave + '%';
+    }
+
+    function iniciarApolo() {
+        scoreApolo = 0;
+        velocidadMeteorito = 5;
+        document.getElementById('score-apolo').innerText = scoreApolo;
+        document.getElementById('btn-iniciar-apolo').style.display = 'none';
+        document.getElementById('meteorito-apolo').style.display = 'block';
+        posMeteoritoY = -50;
+        lanzarMeteorito();
+        clearInterval(loopApolo);
+        loopApolo = setInterval(actualizarJuego, 50); // El motor del juego
+    }
+
+    function lanzarMeteorito() {
+        posMeteoritoY = -20;
+        posMeteoritoX = Math.floor(Math.random() * 90) + 5;
+        document.getElementById('meteorito-apolo').style.left = posMeteoritoX + '%';
+    }
+
+    function actualizarJuego() {
+        posMeteoritoY += velocidadMeteorito;
+        document.getElementById('meteorito-apolo').style.top = posMeteoritoY + 'px';
+
+        // Lógica de Choque (Colisión)
+        const areaApolo = document.getElementById('area-apolo').offsetHeight;
+        if (posMeteoritoY > areaApolo - 50 && posMeteoritoY < areaApolo) {
+            if (Math.abs(posNave - posMeteoritoX) < 15) {
+                // Si chocó, apaga el juego
+                clearInterval(loopApolo);
+                alert("¡Houston, tenemos un problema! 💥 Puntuación final: " + scoreApolo);
+                document.getElementById('btn-iniciar-apolo').style.display = 'block';
+                document.getElementById('btn-iniciar-apolo').innerText = '🔄 VOLVER A INTENTAR';
+                document.getElementById('meteorito-apolo').style.display = 'none';
+                return;
+            }
+        }
+
+        // Si logró esquivarlo y el meteorito salió por abajo
+        if (posMeteoritoY > areaApolo) {
+            scoreApolo++;
+            document.getElementById('score-apolo').innerText = scoreApolo;
+            velocidadMeteorito += 0.5; // Cada vez caen más rápido
+            lanzarMeteorito(); // Lanza el siguiente
+        }
     }
 </script>
-<!-- === FIN PAQUETE DOBLE === -->
+<!-- === FIN PAQUETE MEJORADO === -->
 </body>
 </html>
